@@ -1,0 +1,7 @@
+{
+  "name": "INMOBITT-INMOBILIARIA",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
