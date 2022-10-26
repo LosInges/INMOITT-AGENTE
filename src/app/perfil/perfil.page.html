@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close-circle" color="secondary"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title color="secondary">INMOBILIARIA</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title color="secondary"> INMOBILIARIAS </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title color="secondary"> LOCALIZACIÓN </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col class="ion-margin-top ion-margin-bottom">
+                <ion-item>
+                  <ion-label position="floating"> CORREO </ion-label>
+                  <ion-input [(ngModel)]="inmobiliaria.correo"> </ion-input> 
+                </ion-item>
+              </ion-col>
+              <ion-col class="ion-margin-top ion-margin-bottom">
+               
+                <ion-item>
+                  <ion-label position="floating"> CONTRASEÑA </ion-label>
+                  <ion-input [(ngModel)]="inmobiliaria.password"> </ion-input> 
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title color="secondary"> DETALLES </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col class="ion-margin-top ion-margin-bottom">
+                <ion-item>
+                  <ion-label position="floating"> NOMBRE </ion-label>
+                  <ion-input [(ngModel)]="inmobiliaria.nombre"> </ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col class="ion-margin-top ion-margin-bottom">
+                <ion-item>
+                  <ion-label position="floating"> DIRECCIÓN </ion-label>
+                  <ion-input > </ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col class="ion-margin-top ion-margin-bottom">
+                <ion-item>
+                  <ion-label position="floating"> NOTARIOS </ion-label>
+                  <ion-input> </ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>            
+          </ion-grid>          
+        </ion-card-content>
+
+        <ion-card-content>
+          <ion-button
+            class="ion-float-right ion-margin-top"
+            fill="solid"
+            (click)="actualizarPerfil()"
+          >
+            ACTUALIZAR
+          </ion-button>
+        </ion-card-content>
+                
+      </ion-card>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

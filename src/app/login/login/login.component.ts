@@ -18,9 +18,9 @@ export class LoginComponent implements OnInit {
     private sessionService: SessionService,
     private router: Router,
     private modalController: ModalController
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   onSubmit() {
     alert(this.email + ', ' + this.password);
@@ -29,15 +29,17 @@ export class LoginComponent implements OnInit {
   login() {
     this.loginService.login(this.email, this.password).subscribe(
       (res) => {
+        if (res.session.tipo !== 'inmobiliaria') {
+          return
+        }
         const promesas: Promise<any>[] = [
+          this.sessionService.clear(),
           this.sessionService.set('email', res.session.email),
           this.sessionService.set('tipo', res.session.tipo),
         ];
-        if (res.tipo === 'inmobiliaria') {
-          promesas.push(this.sessionService.set('empresa', res.empresa));
-        }
+
         Promise.all(promesas).then(() => {
-          this.router.navigate(['/fletes']);
+          console.log("Bienvenido Guapo")
         });
       },
       (err) => console.log(err)
@@ -45,7 +47,7 @@ export class LoginComponent implements OnInit {
   }
 
 
-  cerrar(){
-    this.modalController.dismiss(); 
+  cerrar() {
+    this.modalController.dismiss();
   }
 }

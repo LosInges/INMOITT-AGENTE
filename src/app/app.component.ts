@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SessionService } from './services/session.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -12,7 +13,19 @@ export class AppComponent {
     { title: 'Archived', url: '/folder/Archived', icon: 'archive' },
     { title: 'Trash', url: '/folder/Trash', icon: 'trash' },
     { title: 'Spam', url: '/folder/Spam', icon: 'warning' },
+    {
+      title: 'Cerrar Sesion',
+      url: '',
+      click: () => this.sessionService.clear(),
+      icon: 'log-out-outline',
+    }
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor() {}
+  constructor(private sessionService: SessionService) {}
+
+  click(funcion: any) {
+    if (funcion) {
+      funcion();
+    }
+  }
 }
