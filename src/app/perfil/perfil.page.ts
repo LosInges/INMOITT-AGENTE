@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
 import { Inmobiliaria } from '../interfaces/inmobiliaria';
+import { EstadosService } from '../services/estados.service';
 import { InmobiliariaService } from '../services/inmobiliaria.service';
+import { SessionService } from '../services/session.service';
 
 @Component({
   selector: 'app-perfil',
@@ -27,19 +28,19 @@ export class PerfilPage implements OnInit {
     agentes: []
   };
 
+  estados = this.estadosService.getEstados();
   constructor(
-    private modalController: ModalController,
+    private estadosService: EstadosService,
+    private sessionService: SessionService,
     private inmobiliariaService: InmobiliariaService
   ) { }
 
   ngOnInit() {
-
+    this.sessionService.get('correo')?.then(correo => {
+      if(correo) this.inmobiliariaService.getInmobiliaria(correo).subscribe(inmobiliaria => this.inmobiliaria = inmobiliaria)
+    })
   }
 
-  actualizarPerfil(){}
-
-  cerrar() {
-    return this.modalController.dismiss();
-  }
+  actualizarPerfil() { }
 
 }

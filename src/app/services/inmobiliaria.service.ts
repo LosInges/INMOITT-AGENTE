@@ -14,4 +14,9 @@ export class InmobiliariaService {
   postInmobiliaria(inmobiliaria: Inmobiliaria):Observable<any>{
     return this.httpClient.post<any>(`${environment.api}/inmobiliaria`,inmobiliaria)
   }
+
+  getInmobiliaria(correo: string):Observable<Inmobiliaria>{
+    return this.httpClient.get<Inmobiliaria>(`${environment.api}/inmobiliaria/${correo}`)
+  }
+
 }
