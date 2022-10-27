@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { Inmobiliaria } from '../interfaces/inmobiliaria';
 import { EstadosService } from '../services/estados.service';
 import { InmobiliariaService } from '../services/inmobiliaria.service';
@@ -33,14 +34,14 @@ export class PerfilPage implements OnInit {
   constructor(
     private estadosService: EstadosService,
     private sessionService: SessionService,
-    private inmobiliariaService: InmobiliariaService
+    private inmobiliariaService: InmobiliariaService,
+    private router:  Router
   ) { }
 
   ngOnInit() {
     this.sessionService.get('correo')?.then(correo => {
       if(correo) this.inmobiliariaService.getInmobiliaria(correo).subscribe(inmobiliaria => {
         this.inmobiliaria = inmobiliaria
-        this.confirmPassword = inmobiliaria.password
       })
     })
   }
@@ -55,6 +56,16 @@ export class PerfilPage implements OnInit {
       if (this.confirmPassword === this.inmobiliaria.password)
       this.inmobiliariaService.postInmobiliaria(this.inmobiliaria).subscribe(res => console.log(res))
     }
+  }
+
+  eliminarPerfil(){
+    if (this.confirmPassword === this.inmobiliaria.password)
+    this.inmobiliariaService.deleteInmobiliaria(this.inmobiliaria.correo).subscribe(res => {
+      if(res.results)
+      this.sessionService.clear().then(()=>this.router.navigate([""]))
+      else console.log(res)
+    })
+
   }
 
 }
