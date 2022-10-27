@@ -15,7 +15,7 @@ export class PerfilPage implements OnInit {
     correo: '',
     password: '',
     nombre: '',
-    estado: '',
+    estados: [],
     direccion: {
       calle: '',
       codigopostal: '',
@@ -27,6 +27,7 @@ export class PerfilPage implements OnInit {
     notarios: [],
     agentes: []
   };
+  confirmPassword = '';
 
   estados = this.estadosService.getEstados();
   constructor(
@@ -37,10 +38,23 @@ export class PerfilPage implements OnInit {
 
   ngOnInit() {
     this.sessionService.get('correo')?.then(correo => {
-      if(correo) this.inmobiliariaService.getInmobiliaria(correo).subscribe(inmobiliaria => this.inmobiliaria = inmobiliaria)
+      if(correo) this.inmobiliariaService.getInmobiliaria(correo).subscribe(inmobiliaria => {
+        this.inmobiliaria = inmobiliaria
+        this.confirmPassword = inmobiliaria.password
+      })
     })
   }
 
-  actualizarPerfil() { }
+  actualizarPerfil() { 
+    if (
+      this.inmobiliaria.correo.trim() !== "" &&
+      this.inmobiliaria.nombre.trim() !== "" &&
+      this.inmobiliaria.password.trim() !== "" &&
+      this.confirmPassword.trim() !== ""
+    ) {
+      if (this.confirmPassword === this.inmobiliaria.password)
+      this.inmobiliariaService.postInmobiliaria(this.inmobiliaria).subscribe(res => console.log(res))
+    }
+  }
 
 }

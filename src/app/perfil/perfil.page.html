@@ -24,13 +24,21 @@
                   <ion-input [(ngModel)]="inmobiliaria.correo"> </ion-input>
                 </ion-item>
               </ion-col>
+             
               <ion-col class="ion-margin-top ion-margin-bottom">
-
                 <ion-item>
                   <ion-label position="floating"> CONTRASEÑA </ion-label>
                   <ion-input [(ngModel)]="inmobiliaria.password"> </ion-input>
                 </ion-item>
               </ion-col>
+
+              <ion-col class="ion-margin-top ion-margin-bottom">
+                <ion-item>
+                  <ion-label position="floating"> CONFIRMAR CONTRASEÑA </ion-label>
+                  <ion-input [(ngModel)]="confirmPassword"> </ion-input>
+                </ion-item>
+              </ion-col>
+
             </ion-row>
           </ion-grid>
         </ion-card-content>
@@ -60,7 +68,7 @@
               <ion-col class="ion-margin-top ion-margin-bottom">
                 <ion-item>
 
-                  <ion-select interface="popover" placeholder="ESTADO" [(ngModel)]="inmobiliaria.estado">
+                  <ion-select interface="popover" placeholder="ESTADO" [multiple]="true" [(ngModel)]="inmobiliaria.estados">
                     <ion-select-option *ngFor="let estado of estados" [value]="estado.nombre">{{estado.nombre}}
                     </ion-select-option>
                   </ion-select>
