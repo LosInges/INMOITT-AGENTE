@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+
+import { Inmobiliaria } from 'src/app/interfaces/inmobiliaria';
 import { LoginService } from 'src/app/services/login.service';
+import { ModalController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { SessionService } from 'src/app/services/session.service';
 
 @Component({
@@ -36,18 +38,20 @@ export class LoginComponent implements OnInit {
           this.sessionService.clear(),
           this.sessionService.set('rfc', res.session.email),
           this.sessionService.set('tipo', res.session.tipo),
+          this.sessionService.set('inmobiliaria', res.session.empresa)
         ];
 
         Promise.all(promesas).then((res) => {
           console.log("Bienvenido Guapo")
+          console.log(res);
           if(res[1] && res[2]) this.modalController.dismiss()
         });
       },
       (err) => console.log(err)
     );
-    
+
   }
- 
+
   cerrar() {
     this.modalController.dismiss();
   }

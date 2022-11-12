@@ -115,6 +115,18 @@
             </ion-row>
 
             <ion-row>
+
+
+              <ion-col>
+                <ion-item color="dark">
+                  <img *ngIf="agente.foto" src="{{api}}/{{agente.foto}}">
+                  <ion-buttons>
+                    <ion-button expand="full" (click)="tomarFotografia()">
+                      TOMAR FOTO
+                    </ion-button>
+                  </ion-buttons>
+                </ion-item>
+              </ion-col>
               <ion-col>
                 <ion-item color="dark">
                   <ion-input
@@ -128,6 +140,7 @@
                   </ion-label>
                 </ion-item>
               </ion-col>
+
 
               <ion-col>
                 <ion-item color="dark">
