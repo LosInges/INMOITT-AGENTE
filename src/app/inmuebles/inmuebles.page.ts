@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { SessionService } from '../services/session.service';
 
 @Component({
   selector: 'app-inmuebles',
@@ -7,7 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InmueblesPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private alertController: AlertController,
+    private sessionService: SessionService,
+  ) {
+    router.events.subscribe(e=>{
+      if(e instanceof NavigationEnd){
+        this.sessionService.keys().then(k=>{
+          if(k.length <= 0){
+            this.router.navigate([''])
+          }
+        })
+      }
+    })
+  }
 
   ngOnInit() {
   }
