@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 
 import { Agente } from 'src/app/interfaces/agente';
 import { AgenteService } from '../services/agente.service';
@@ -40,7 +40,16 @@ export class PerfilPage implements OnInit {
     private router: Router,
     private fotoService: FotoService,
     private alertController: AlertController
-  ) {}
+  ) {
+    router.events.subscribe(e=>{
+    if(e instanceof NavigationEnd){
+      this.sessionService.keys().then(k=>{
+        if(k.length <= 0){
+          this.router.navigate([''])
+        }
+      })
+    }
+  })}
 
   ngOnInit() {
     this.sessionService.get('inmobiliaria').then((inmobiliaria) => {
