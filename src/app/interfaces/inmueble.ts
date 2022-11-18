@@ -1,20 +1,22 @@
 import { Direccion } from "./direccion";
-import { Notario } from "./notario";
 
-export interface inmueble{
-    titulo: string;
-    estado: string; 
-    cuartos: number; 
-    descripcion: string; 
-    direccion: Direccion; 
-    foto: string;
-    metros_cuadrados: string;
-    notarios: Notario;
-    pisos: number;
-    precio_renta: number;
-    precio_venta: number; 
-    servicios: string; 
-    agente: string;
-    borrado: false;
-    visible: true
+export interface Inmueble{
+  inmobiliaria: string;
+  proyecto: string;
+  titulo: string;
+  estado: string;
+  foto: string;
+  direccion: Direccion;
+  precio_renta: number;
+  precio_venta: number;
+  cuartos: number;
+  pisos: number;
+  metros_cuadrados: number;
+  descripcion: string;
+  servicios: string[];
+  notario: string;
+  agente: string;
+  visible: boolean;
+  borrado: boolean;
+  cliente?: string;
 }

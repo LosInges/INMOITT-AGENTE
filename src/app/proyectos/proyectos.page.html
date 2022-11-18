@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Proyectos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button
+        fill="solid"
+        color="secondary"
+        [routerLink]="['/', 'inmueble', 'registro']"
+      >
+        AGREGAR
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-list>
+        <ion-item-sliding *ngFor="let proyecto of proyectos" #itemSliding>
+          <ion-item>
+           <ion-label>{{proyecto.nombre}}</ion-label>
+
+            <ion-label class="centrado">{{ proyecto.ciudad }} </ion-label>
+          </ion-item>
+          <ion-item-options
+            side="start"
+            (ionSwipe)="verProyecto(proyecto); itemSliding.close()"
+          >
+            <ion-item-option expandable color="success">
+              <ion-icon name="eye"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

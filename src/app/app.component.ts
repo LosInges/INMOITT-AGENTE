@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SessionService } from './services/session.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -7,8 +8,8 @@ import { SessionService } from './services/session.service';
 })
 export class AppComponent {
   public appPages = [
-    { title: 'Perfil', url: '/perfil', icon: 'paper-plane' },
-    { title: 'Inmuebles', url: '/inmuebles', icon: 'heart' },
+    { title: 'Perfil', url: '/perfil', icon: 'person' },
+    { title: 'Proyectos', url: '/proyectos', icon: 'heart' },
     {
       title: 'Cerrar Sesion',
       url: '',
