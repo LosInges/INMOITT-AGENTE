@@ -19,7 +19,7 @@
           <ion-grid>
             <ion-row>
               <ion-col>
-                <ion-item color="dark">
+                <ion-item >
                   <ion-input
                     [(ngModel)]="agente.rfc"
                     type="text"
@@ -33,7 +33,7 @@
               </ion-col>
 
               <ion-col>
-                <ion-item color="dark">
+                <ion-item >
                   <ion-input
                     [(ngModel)]="agente.password"
                     type="text"
@@ -47,7 +47,7 @@
               </ion-col>
 
               <ion-col>
-                <ion-item color="dark">
+                <ion-item >
                   <ion-input
                     [(ngModel)]="confirmPassword"
                     type="text"
@@ -72,7 +72,7 @@
           <ion-grid>
             <ion-row>
               <ion-col>
-                <ion-item color="dark">
+                <ion-item >
                   <ion-input
                     [(ngModel)]="agente.nombre"
                     type="text"
@@ -86,7 +86,7 @@
               </ion-col>
 
               <ion-col>
-                <ion-item color="dark">
+                <ion-item >
                   <ion-input
                     [(ngModel)]="apellidoPat"
                     type="text"
@@ -100,7 +100,7 @@
               </ion-col>
 
               <ion-col>
-                <ion-item color="dark">
+                <ion-item >
                   <ion-input
                     [(ngModel)]="apellidoMat"
                     type="text"
@@ -118,7 +118,7 @@
 
 
               <ion-col>
-                <ion-item color="dark">
+                <ion-item >
                   <img *ngIf="agente.foto" src="{{api}}/{{agente.foto}}">
                   <ion-buttons>
                     <ion-button expand="full" (click)="tomarFotografia()">
@@ -128,7 +128,7 @@
                 </ion-item>
               </ion-col>
               <ion-col>
-                <ion-item color="dark">
+                <ion-item >
                   <ion-input
                     [(ngModel)]="agente.correo"
                     type="text"
@@ -143,7 +143,7 @@
 
 
               <ion-col>
-                <ion-item color="dark">
+                <ion-item >
                   <ion-input
                     [(ngModel)]="agente.telefono"
                     type="text"
@@ -157,7 +157,7 @@
               </ion-col>
 
               <ion-col>
-                <ion-item color="dark">
+                <ion-item >
                   <ion-icon
                     style="padding: 0 15px"
                     name="business-outline"

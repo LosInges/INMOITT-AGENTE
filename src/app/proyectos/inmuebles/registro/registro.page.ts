@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+
 import { Estado } from 'src/app/interfaces/estado';
-import { inmueble } from 'src/app/interfaces/inmueble';
 import { EstadosService } from 'src/app/services/estados.service';
-import { InmuebleRegistroService } from 'src/app/services/inmueble.service';
+import { Inmueble } from 'src/app/interfaces/inmueble';
+import { InmuebleService } from 'src/app/services/inmueble.service';
 import { SessionService } from 'src/app/services/session.service';
 
 @Component({
@@ -14,12 +15,14 @@ export class RegistroPage implements OnInit {
   estados: Estado[]=this.estadosService.getEstados()
   correo: string = ''
   inmobiliaria: string = ''
- inmueble : inmueble = {
+ inmueble : Inmueble = {
+  inmobiliaria:'',
+  proyecto:'',
   titulo: '',
-  estado: '', 
-  cuartos: 0, 
-  descripcion: '', 
- 
+  estado: '',
+  cuartos: 0,
+  descripcion: '',
+
   direccion: {
     calle: '',
     codigopostal: '',
@@ -28,27 +31,22 @@ export class RegistroPage implements OnInit {
     numerointerior: '',
     estado: '',
   },
-  
+
   foto: '',
-  metros_cuadrados: '',
-  
-  notarios: {
-    nombre: '',
-    apellido: '',
-    correo: '',
-    foto: ''
-  },
+  metros_cuadrados: 0,
+
+  notario: '',
   pisos: 0,
   precio_renta: 0,
-  precio_venta: 0, 
-  servicios: '', 
+  precio_venta: 0,
+  servicios: [],
   agente: '',
   borrado: false,
   visible: true
  }
 
   constructor(
-    private inmuebleRegistroService : InmuebleRegistroService,
+    private inmuebleService : InmuebleService,
     private sessionService : SessionService,
     private estadosService : EstadosService
   ) { }
@@ -66,5 +64,5 @@ export class RegistroPage implements OnInit {
     console.log(this.inmueble)
   }
 
-  
+
 }
