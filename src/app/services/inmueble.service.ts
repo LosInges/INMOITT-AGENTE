@@ -52,7 +52,6 @@ export class InmuebleService {
   }
 
   postInmueble(inmueble: Inmueble): Observable<any> {
-    console.log(inmueble);
     return this.httpClient.post<any>(`${environment.api}/inmueble`, inmueble);
   }
 

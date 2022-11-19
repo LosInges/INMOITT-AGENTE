@@ -36,7 +36,11 @@ export class AgenteService {
       `${environment.api}/proyectos/agente/${agente}`
     );
   }
-
+  getAgentes(inmobiliaria: string): Observable<Agente[]> {
+    return this.httpClient.get<Agente[]>(
+      `${environment.api}/agentes/${inmobiliaria}`
+    );
+  }
 
   getAgente(inmobiliaria: string, rfc: string): Observable<Agente> {
     return this.httpClient.get<Agente>(
