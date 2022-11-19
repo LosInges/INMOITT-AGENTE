@@ -93,7 +93,7 @@ export class PerfilPage implements OnInit {
         .postAgente(this.agente)
         .subscribe((res) => console.log(res));
         this.mensaje = "Actualización EXITOSA"
-       
+
     }else{
       this.mensaje ="Ingrese Todos los valores"
     }
@@ -143,7 +143,7 @@ export class PerfilPage implements OnInit {
         });
         datos.append('img', imgBlob, `imagen.${photo.format}`);
         this.fotoService
-          .subirMiniatura(datos)
+          .subirImgMiniatura(datos)
           .subscribe((res) => (this.agente.foto = res.path));
       };
       const consulta = fetch(photo.webPath).then((v) =>

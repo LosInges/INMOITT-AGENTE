@@ -9,6 +9,8 @@ import { InmuebleService } from 'src/app/services/inmueble.service';
 import { Notario } from 'src/app/interfaces/notario';
 import { Proyecto } from 'src/app/interfaces/proyecto';
 import { ProyectosService } from 'src/app/services/proyectos.service';
+import { RegistroPage } from './registro/registro.page';
+import { ServiciosService } from 'src/app/services/servicios.service';
 import { SessionService } from 'src/app/services/session.service';
 import { environment } from 'src/environments/environment';
 
@@ -22,7 +24,7 @@ export class InmueblesPage implements OnInit {
   inmuebles: Inmueble[] = [];
   agentesProyecto: Agente[];
   notariosProyecto: Notario[];
-  // servicios = this.serviciosService.getServicios();
+  servicios = this.serviciosService.getServicios();
   inmobiliaria: string;
   api = environment.api;
   apellidoPat = '';
@@ -48,7 +50,8 @@ export class InmueblesPage implements OnInit {
     private inmuebleService: InmuebleService,
     private agenteService: AgenteService,
     private modalController: ModalController,
-    private serviciosService:SessionService
+    private serviciosService: ServiciosService,
+    private alertConttroller: AlertController
   ) {
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
@@ -85,15 +88,13 @@ export class InmueblesPage implements OnInit {
     });
   }
 
-  verInmueble(inmueble: Inmueble) {
-    this.router.navigate([
-      'proyectos',
-      inmueble.proyecto,
-      'inmuebles',
-      'inmueble',
-      inmueble.titulo,
-    ]);
+
+  verInmueble(titulo: string) {
+    this.router.navigate(['./', 'detalle', titulo], {
+      relativeTo: this.activatedRoute,
+    });
   }
+
 
   eliminarInmueble(inmueble: Inmueble){
     this.inmuebleService
@@ -108,7 +109,17 @@ export class InmueblesPage implements OnInit {
           this.inmuebles = this.inmuebles.filter(
             (inmuebleIterable) => inmueble !== inmuebleIterable
           );
+          this.alertConttroller.create({
+            header: 'ÉXITOSAME',
+            message: 'Se eliminó el INMUEBLE',
+            buttons: ['CERRAR'],
+          });
         } else {
+          this.alertConttroller.create({
+            header: 'ERROR',
+            message: 'NO se pudo elminar el INMUEBLE',
+            buttons: ['CERRAR'],
+          });
           console.log(valor);
         }
       });
@@ -122,6 +133,9 @@ export class InmueblesPage implements OnInit {
           (inmuebleIterable) => !inmuebleIterable.borrado
         );
       });
+  }
+  async agregarInmueble() {
+    this.router.navigate(['./', 'registro'],{relativeTo: this.activatedRoute})
   }
 
 
