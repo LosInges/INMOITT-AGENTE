@@ -24,12 +24,8 @@ export class DetallePage implements OnInit {
    descripcion: '',
 
    direccion: {
-     calle: '',
-     codigopostal: '',
-     colonia: '',
-     numeroexterior: '',
-     numerointerior: '',
-     estado: '',
+    lat: 0,
+    lng: 0
    },
 
    foto: '',
