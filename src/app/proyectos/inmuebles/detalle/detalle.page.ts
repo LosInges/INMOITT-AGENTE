@@ -67,7 +67,7 @@ export class DetallePage implements OnInit {
         //active route, url
         this.activatedRoute.params.subscribe((params) => {
           console.log(params);
-
+          
           if (params.proyecto && params.titulo) {
             this.proyectosService.getNotariosProyecto(params.proyecto, inmobiliaria).subscribe(a=>{
               a.forEach(notario => this.notarioService.getNotario(inmobiliaria, notario.notario).subscribe(n=>{
