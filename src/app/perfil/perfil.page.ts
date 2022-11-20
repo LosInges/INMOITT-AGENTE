@@ -38,6 +38,7 @@ export class PerfilPage implements OnInit {
     private inmobiliariaService: InmobiliariaService,
     private agenteService: AgenteService,
     private router: Router,
+    private alertCtrl: AlertController,
     private fotoService: FotoService,
     private alertController: AlertController
   ) {
@@ -50,6 +51,18 @@ export class PerfilPage implements OnInit {
         });
       }
     });
+  }
+
+  async mostrarAlerta(titulo: string, subtitulo: string, mensaje: string) {
+    const alert = await this.alertCtrl.create({
+      header: titulo,
+      subHeader: subtitulo,
+      message: mensaje,
+      buttons: ['OK']
+    });
+    await alert.present();
+    const result = await alert.onDidDismiss();
+    console.log(result);
   }
 
   ngOnInit() {
@@ -75,30 +88,59 @@ export class PerfilPage implements OnInit {
     });
   }
 
-  actualizarPerfil() {
-    // if (
-    //   this.agente.rfc.trim() !== "" &&
-    //   this.agente.inmobiliaria.trim() !== "" &&
-    //   this.agente.nombre.trim() !== "" &&
-    //   this.agente.correo.trim() !== "" &&
-    //   this.agente.password.trim() !== "" &&
-    //   this.agente.apellido.trim() !== "" &&
-    //   this.agente.foto.trim() !== "" &&
-    //   this.agente.telefono.trim() !== "" &&
-    //   this.confirmPassword.trim() !== ""
-    // )
-    //{
-    if (this.confirmPassword === this.agente.password) {
-      this.agente.apellido = this.apellidoPat + ' ' + this.apellidoMat;
-      this.agenteService
-        .postAgente(this.agente)
-        .subscribe((res) => console.log(res));
-      this.mensaje = 'Actualización EXITOSA';
+  async actualizarPerfil() {
+    if (
+      this.agente.rfc.trim().length <= 0 ||
+      this.agente.password.trim().length <= 0 ||
+      this.agente.nombre.trim().length <= 0 ||
+      this.apellidoMat.trim().length <= 0 ||
+      this.apellidoPat.trim().length <= 0 ||
+      this.agente.correo.trim().length <= 0 ||
+      this.agente.inmobiliaria.trim().length <= 0 ||
+      this.agente.telefono.trim().length <= 0 ||
+      this.agente.foto.length <= 0
+    ) {
+      this.mostrarAlerta("Error", "Campos vacios", "No deje espacios en blanco.")
     } else {
-      this.mensaje = 'Ingrese Todos los valores';
+      let alert: HTMLIonAlertElement;
+      alert = await this.alertController.create({
+        header: 'Confirmar Contraseña',
+        inputs: [
+          {
+            name: 'password',
+            placeholder: 'Contraseña',
+            type: 'password',
+
+          },
+        ],
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+          },
+          {
+            text: 'Aceptar',
+            role: 'accept',
+            handler: (data) => {
+              if (data.password === this.agente.password) {
+                this.agente.apellido = this.apellidoPat + ' ' + this.apellidoMat
+                this.agenteService
+                .postAgente(this.agente)
+                .subscribe((res) => console.log(res)); 
+              }
+              else {
+                this.alertController.create({
+                  header: 'Contraseña',
+                  message: 'Contraseña INCORRECTA',
+                  buttons: ['Aceptar'],
+                }).then(a => a.present());
+              }
+            },
+          },
+        ],
+      });
+      await alert.present();
     }
-    this.presentAlert(this.mensaje);
-    //}
   }
 
   async presentAlert(mensaje) {

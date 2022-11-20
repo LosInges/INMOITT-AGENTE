@@ -2,7 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { MapsComponent } from 'src/app/maps/maps.component';
 import { Direccion } from 'src/app/interfaces/direccion';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { Inmueble } from 'src/app/interfaces/inmueble';
 import { InmuebleService } from 'src/app/services/inmueble.service';
 import { Notario } from 'src/app/interfaces/notario';
@@ -50,9 +50,22 @@ export class DetallePage implements OnInit {
     private modalController: ModalController, 
     private sessionService: SessionService,
     private activatedRoute: ActivatedRoute, 
+    private alertCtrl: AlertController,
     private notarioService: NotarioService,
     private proyectosService: ProyectosService
   ) {}
+
+  async mostrarAlerta(titulo: string, subtitulo: string, mensaje: string) {
+    const alert = await this.alertCtrl.create({
+      header: titulo,
+      subHeader: subtitulo,
+      message: mensaje,
+      buttons: ['OK']
+    });
+    await alert.present();
+    const result = await alert.onDidDismiss();
+    console.log(result);
+  }
 
   ngOnInit() {
     this.sessionService.get('inmobiliaria').then((inmobiliaria) => {
@@ -79,9 +92,25 @@ export class DetallePage implements OnInit {
   }
 
   actualizarInmueble() {
-    this.inmuebleService
+
+    if (
+      this.inmueble.inmobiliaria.trim().length <= 0 ||
+      this.inmueble.titulo.trim().length <= 0 ||
+      this.inmueble.estado.trim().length <= 0 ||
+      this.inmueble.notario.trim().length <= 0 ||
+      this.inmueble.pisos <= 0 ||
+      this.inmueble.cuartos <= 0 ||
+      this.inmueble.metros_cuadrados <= 0 ||
+      this.inmueble.descripcion.trim().length <= 0 ||
+      this.inmueble.servicios.length <= 0 || 
+      this.inmueble.precio_venta <= 0 
+    ){
+      this.mostrarAlerta("Error", "Campos vacios", "No deje espacios en blanco.")
+    }else{
+      this.inmuebleService
       .postInmueble(this.inmueble)
       .subscribe((res) => console.log(res));
+    } 
   }
 
   async verPosicion(position: Direccion) {

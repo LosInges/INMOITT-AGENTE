@@ -57,9 +57,22 @@ export class RegistroPage implements OnInit {
     private sessionService: SessionService,
     private activeRoute: ActivatedRoute,
     private notarioService: NotarioService,
+    private alertCtrl: AlertController,
     private serviciosService: ServiciosService,
     private router: Router
-  ) {}
+  ) { }
+
+  async mostrarAlerta(titulo: string, subtitulo: string, mensaje: string) {
+    const alert = await this.alertCtrl.create({
+      header: titulo,
+      subHeader: subtitulo,
+      message: mensaje,
+      buttons: ['OK']
+    });
+    await alert.present();
+    const result = await alert.onDidDismiss();
+    console.log(result);
+  }
 
   ngOnInit() {
     this.sessionService.get('rfc').then((rfc) => {
@@ -97,31 +110,45 @@ export class RegistroPage implements OnInit {
   }
 
   registrarInmueble() {
-    this.inmuebleService.postInmueble(this.inmueble).subscribe((val) => {
-      if (val.results) {
+    if (
+      this.inmueble.inmobiliaria.trim().length <= 0 ||
+      this.inmueble.titulo.trim().length <= 0 ||
+      this.inmueble.estado.trim().length <= 0 ||
+      this.inmueble.notario.trim().length <= 0 ||
+      this.inmueble.pisos <= 0 ||
+      this.inmueble.cuartos <= 0 ||
+      this.inmueble.metros_cuadrados <= 0 ||
+      this.inmueble.descripcion.trim().length <= 0 ||
+      this.inmueble.servicios.length <= 0  
+    ) {
+      this.mostrarAlerta("Error", "Campos vacios", "No deje espacios en blanco.")
+    } else {
+      this.inmuebleService.postInmueble(this.inmueble).subscribe((val) => {
+        if (val.results) {
+          this.alertConttroller
+            .create({
+              header: 'ÉXITOSAME',
+              message: 'Se registró INMUEBLE',
+              buttons: ['CERRAR'],
+            })
+            .then((a) => {
+              a.onDidDismiss().then((data) =>
+                this.router.navigate(['../'], { relativeTo: this.activeRoute })
+              );
+              a.present();
+            });
+
+          return;
+        }
         this.alertConttroller
           .create({
-            header: 'ÉXITOSAME',
-            message: 'Se registró INMUEBLE',
+            header: 'ERROR',
+            message: 'Inmueble  no registrado',
             buttons: ['CERRAR'],
           })
-          .then((a) => {
-            a.onDidDismiss().then((data) =>
-              this.router.navigate(['../'], { relativeTo: this.activeRoute })
-            );
-            a.present();
-          });
-
-        return;
-      }
-      this.alertConttroller
-        .create({
-          header: 'ERROR',
-          message: 'Inmueble  no registrado',
-          buttons: ['CERRAR'],
-        })
-        .then((a) => a.present());
-    });
+          .then((a) => a.present());
+      });
+    }
   }
 
   tomarFotografia() {

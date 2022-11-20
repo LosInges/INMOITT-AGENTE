@@ -18,6 +18,16 @@
         <ion-card-content>
           <ion-grid>
             <ion-row>
+              <ion-col size="1" >
+                <ion-item>
+                  <img *ngIf="agente.foto" src="{{api}}/{{agente.foto}}">
+                  <ion-buttons>
+                    <ion-button expand="full" (click)="tomarFotografia()">
+                      TOMAR FOTO
+                    </ion-button>
+                  </ion-buttons>
+                </ion-item>
+              </ion-col>
               <ion-col>
                 <ion-item >
                   <ion-input
@@ -36,7 +46,7 @@
                 <ion-item >
                   <ion-input
                     [(ngModel)]="agente.password"
-                    type="text"
+                    type="password"
                     required
                     placeholder="Contraseña"
                   ></ion-input>
@@ -46,7 +56,7 @@
                 </ion-item>
               </ion-col>
 
-              <ion-col>
+              <!-- <ion-col>
                 <ion-item >
                   <ion-input
                     [(ngModel)]="confirmPassword"
@@ -58,7 +68,7 @@
                     <ion-icon name="lock-closed"></ion-icon>
                   </ion-label>
                 </ion-item>
-              </ion-col>
+              </ion-col>-->
             </ion-row>
           </ion-grid>
         </ion-card-content>
@@ -114,19 +124,7 @@
               </ion-col>
             </ion-row>
 
-            <ion-row>
-
-
-              <ion-col>
-                <ion-item >
-                  <img *ngIf="agente.foto" src="{{api}}/{{agente.foto}}">
-                  <ion-buttons>
-                    <ion-button expand="full" (click)="tomarFotografia()">
-                      TOMAR FOTO
-                    </ion-button>
-                  </ion-buttons>
-                </ion-item>
-              </ion-col>
+            <ion-row> 
               <ion-col>
                 <ion-item >
                   <ion-input
