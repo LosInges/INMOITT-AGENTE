@@ -27,19 +27,12 @@ export class DetallePage implements OnInit {
     estado: '',
     cuartos: 0,
     descripcion: '',
-
-    direccion: {
-      calle: '',
-      codigopostal: '',
-      colonia: '',
-      numeroexterior: '',
-      numerointerior: '',
-      estado: '',
-    },
-
+   direccion: {
+    lat: 0,
+    lng: 0
+   },
     foto: '',
     metros_cuadrados: 0,
-
     notario: '',
     pisos: 0,
     precio_renta: 0,
@@ -49,6 +42,7 @@ export class DetallePage implements OnInit {
     borrado: false,
     visible: true,
   };
+  
   constructor(
     private inmuebleService: InmuebleService,
     private alertConttroller: AlertController,
@@ -67,7 +61,6 @@ export class DetallePage implements OnInit {
         //active route, url
         this.activatedRoute.params.subscribe((params) => {
           console.log(params);
-          
           if (params.proyecto && params.titulo) {
             this.proyectosService.getNotariosProyecto(params.proyecto, inmobiliaria).subscribe(a=>{
               a.forEach(notario => this.notarioService.getNotario(inmobiliaria, notario.notario).subscribe(n=>{
