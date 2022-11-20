@@ -21,7 +21,7 @@
 
         <ion-card-content>
           <ion-grid>
-            <ion-row>
+            <ion-row class="ion-align-items-end">
               <ion-col class="ion-margin-top ion-margin-bottom">
                 <ion-item>
                   <ion-label position="floating"> TITULO </ion-label>
@@ -38,14 +38,13 @@
               </ion-col>
 
               <ion-col class="ion-margin-top ion-margin-bottom">
-                <ion-item>
-                  <ion-label position="floating"> FOTO </ion-label>
-                  <ion-input> </ion-input>
+                <ion-item> 
+                  <ion-img *ngIf="inmueble.foto" src="{{ api }}/{{ inmueble.foto }}"></ion-img>
                 </ion-item>
               </ion-col>
             </ion-row>
 
-            <ion-row>
+            <ion-row class="ion-align-items-end">
               <ion-col class="ion-margin-top ion-margin-bottom">
                 <ion-item>
                   <ion-label position="floating"> INMOBILIARIA </ion-label>
@@ -77,13 +76,14 @@
 
         <ion-card-content>
           <ion-grid>
-            <ion-row>
+            <ion-row class="ion-align-items-end">
               <ion-col>
                 <ion-item>
-                  <ion-label position="floating"> DIRECCIÓN </ion-label>
-                  <ion-input> </ion-input>
+                  <ion-button size="default" (click)="verPosicion(inmueble.direccion)">Ver dirección</ion-button>
+                 
+                  <ion-button size="default" (click)="guardarDireccion()">Seleccionar dirección</ion-button>
                 </ion-item>
-              </ion-col>
+              </ion-col>  
 
               <ion-col>
                 <ion-item>
@@ -100,7 +100,7 @@
               </ion-col>
             </ion-row>
 
-            <ion-row>
+            <ion-row class="ion-align-items-end">
               <ion-col>
                 <ion-item>
                   <ion-label position="floating"> METROS CUADRADOS </ion-label>
@@ -123,7 +123,7 @@
               </ion-col>
             </ion-row>
 
-            <ion-row>
+            <ion-row class="ion-align-items-end">
               <ion-col>
                 <ion-item>
                   <ion-label position="floating"> VISTA </ion-label>
@@ -150,7 +150,7 @@
 
         <ion-card-content>
           <ion-button
-            class="ion-float-right ion-margin-top"
+            class="ion-float-right ion-margin-top ion-margin-bottom"
             fill="solid"
             (click)=" actualizarInmueble()"
           >

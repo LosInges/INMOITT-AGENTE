@@ -14,9 +14,9 @@
   <ion-list>
     <ion-item-sliding *ngFor="let inmueble of inmuebles" #itemSliding>
       <ion-item>
-        <ion-img src="{{api}}/{{inmueble.foto}}"></ion-img>
+        <ion-img  src="{{api}}/{{inmueble.foto}}"></ion-img>
 
-        <ion-label>{{inmueble.titulo}} </ion-label>
+        <ion-label >{{inmueble.titulo}} </ion-label>
         <ion-label *ngIf="inmueble.precio_venta>0"
           >{{inmueble.precio_venta}}
         </ion-label>

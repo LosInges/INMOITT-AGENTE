@@ -1,15 +1,15 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-
-import { AgenteService } from 'src/app/services/agente.service';
-import { AlertController } from '@ionic/angular';
+import { MapsComponent } from 'src/app/maps/maps.component';
+import { Direccion } from 'src/app/interfaces/direccion';
+import { ModalController } from '@ionic/angular';
 import { Inmueble } from 'src/app/interfaces/inmueble';
 import { InmuebleService } from 'src/app/services/inmueble.service';
 import { Notario } from 'src/app/interfaces/notario';
-import { NotarioService } from 'src/app/services/notario.service';
-import { Proyecto } from 'src/app/interfaces/proyecto';
+import { NotarioService } from 'src/app/services/notario.service'; 
 import { ProyectosService } from 'src/app/services/proyectos.service';
 import { SessionService } from 'src/app/services/session.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-detalle',
@@ -42,15 +42,14 @@ export class DetallePage implements OnInit {
     borrado: false,
     visible: true,
   };
+
+  api = environment.api;
   
   constructor(
-    private inmuebleService: InmuebleService,
-    private alertConttroller: AlertController,
-    private router: Router,
-    private activeRoute: ActivatedRoute,
+    private inmuebleService: InmuebleService, 
+    private modalController: ModalController, 
     private sessionService: SessionService,
-    private activatedRoute: ActivatedRoute,
-    private agenteService: AgenteService,
+    private activatedRoute: ActivatedRoute, 
     private notarioService: NotarioService,
     private proyectosService: ProyectosService
   ) {}
@@ -83,5 +82,27 @@ export class DetallePage implements OnInit {
     this.inmuebleService
       .postInmueble(this.inmueble)
       .subscribe((res) => console.log(res));
+  }
+
+  async verPosicion(position: Direccion) {
+    const modal = await this.modalController.create({
+      component: MapsComponent,
+      componentProps: { position },
+      cssClass: 'modalGeneral'
+    });
+    return modal.present();
+  }
+
+  async guardarDireccion() {
+    const modal = await this.modalController.create({
+      component: MapsComponent,
+      cssClass: 'modalGeneral',
+    });
+    modal.onDidDismiss().then((res) => {
+      if (res.data) {
+        this.inmueble.direccion = res.data.pos;
+      }
+    });
+    return modal.present();
   }
 }

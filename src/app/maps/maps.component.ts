@@ -9,8 +9,8 @@ import {
 } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { MapsService } from '../services/maps.service';
-import { DOCUMENT } from '@angular/common';
 import { Geolocation } from '@capacitor/geolocation';
+import { DOCUMENT } from '@angular/common';
 import { Direccion } from '../interfaces/direccion';
 
 declare let google: any;
