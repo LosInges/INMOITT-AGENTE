@@ -1,11 +1,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Component, Input, OnInit } from '@angular/core';
-
-import { Agente } from 'src/app/interfaces/agente';
-import { AgenteService } from 'src/app/services/agente.service';
-import { Estado } from 'src/app/interfaces/estado';
-import { EstadosService } from 'src/app/services/estados.service';
+import { MapsComponent } from 'src/app/maps/maps.component';
 import { FotoService } from 'src/app/services/foto.service';
 import { Inmueble } from 'src/app/interfaces/inmueble';
 import { InmuebleService } from 'src/app/services/inmueble.service';
@@ -146,6 +142,19 @@ export class RegistroPage implements OnInit {
         v.blob().then((imagen) => reader.readAsArrayBuffer(imagen))
       );
     });
+  }
+
+  async guardarDireccion() {
+    const modal = await this.modalController.create({
+      component: MapsComponent,
+      cssClass: 'modalGeneral',
+    });
+    modal.onDidDismiss().then((res) => {
+      if (res.data) {
+        this.inmueble.direccion = res.data.pos;
+      }
+    });
+    return modal.present();
   }
 
   cerrar() {
