@@ -16,8 +16,8 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./perfil.page.scss'],
 })
 export class PerfilPage implements OnInit {
-  apellidoPat: string = '';
-  apellidoMat: string = '';
+  apellidoPat = '';
+  apellidoMat = '';
   inmobiliarias: Inmobiliaria[];
   api = environment.api;
   agente: Agente = {
@@ -41,15 +41,16 @@ export class PerfilPage implements OnInit {
     private fotoService: FotoService,
     private alertController: AlertController
   ) {
-    router.events.subscribe(e=>{
-    if(e instanceof NavigationEnd){
-      this.sessionService.keys().then(k=>{
-        if(k.length <= 0){
-          this.router.navigate([''])
-        }
-      })
-    }
-  })}
+    router.events.subscribe((e) => {
+      if (e instanceof NavigationEnd) {
+        this.sessionService.keys().then((k) => {
+          if (k.length <= 0) {
+            this.router.navigate(['']);
+          }
+        });
+      }
+    });
+  }
 
   ngOnInit() {
     this.sessionService.get('inmobiliaria').then((inmobiliaria) => {
@@ -92,12 +93,11 @@ export class PerfilPage implements OnInit {
       this.agenteService
         .postAgente(this.agente)
         .subscribe((res) => console.log(res));
-        this.mensaje = "Actualización EXITOSA"
-
-    }else{
-      this.mensaje ="Ingrese Todos los valores"
+      this.mensaje = 'Actualización EXITOSA';
+    } else {
+      this.mensaje = 'Ingrese Todos los valores';
     }
-    this.presentAlert(this.mensaje)
+    this.presentAlert(this.mensaje);
     //}
   }
 
@@ -117,16 +117,19 @@ export class PerfilPage implements OnInit {
       ],
     });
 
-      await alert.present();
-    }
+    await alert.present();
+  }
 
   eliminarPerfil() {
-    if (this.confirmPassword === this.agente.password)
+    if (this.confirmPassword === this.agente.password) {
       this.agenteService.deleteAgente(this.agente.rfc).subscribe((res) => {
-        if (res.results)
+        if (res.results) {
           this.sessionService.clear().then(() => this.router.navigate(['']));
-        else console.log(res);
+        } else {
+          console.log(res);
+        }
       });
+    }
   }
 
   tomarFotografia() {
