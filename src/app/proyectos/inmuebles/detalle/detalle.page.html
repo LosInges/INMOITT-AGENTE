@@ -88,14 +88,14 @@
               <ion-col>
                 <ion-item>
                   <ion-label position="floating"> PISOS </ion-label>
-                  <ion-input> </ion-input>
+                  <ion-input  [(ngModel)]="inmueble.pisos"> </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col>
                 <ion-item>
                   <ion-label position="floating"> CUARTOS </ion-label>
-                  <ion-input> </ion-input>
+                  <ion-input  [(ngModel)]="inmueble.cuartos"> </ion-input>
                 </ion-item>
               </ion-col>
             </ion-row>
@@ -104,21 +104,21 @@
               <ion-col>
                 <ion-item>
                   <ion-label position="floating"> METROS CUADRADOS </ion-label>
-                  <ion-input> </ion-input>
+                  <ion-input  [(ngModel)]="inmueble.metros_cuadrados"> </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col>
                 <ion-item>
                   <ion-label position="floating"> DESCRIPCION </ion-label>
-                  <ion-input> </ion-input>
+                  <ion-input  [(ngModel)]="inmueble.descripcion"> </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col>
                 <ion-item>
                   <ion-label position="floating"> SERVICIOS </ion-label>
-                  <ion-input> </ion-input>
+                  <ion-input  [(ngModel)]="inmueble.servicios"> </ion-input>
                 </ion-item>
               </ion-col>
             </ion-row>
@@ -127,21 +127,21 @@
               <ion-col>
                 <ion-item>
                   <ion-label position="floating"> VISTA </ion-label>
-                  <ion-input type="checkbox"> </ion-input>
+                  <ion-input type="checkbox"  [(ngModel)]="inmueble.visible">  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col>
                 <ion-item>
                   <ion-label position="floating"> PRECIO RENTA </ion-label>
-                  <ion-input> </ion-input>
+                  <ion-input  [(ngModel)]="inmueble.precio_renta"> </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col>
                 <ion-item>
                   <ion-label position="floating"> PRECIO VENTA </ion-label>
-                  <ion-input> </ion-input>
+                  <ion-input  [(ngModel)]="inmueble.precio_venta"> </ion-input>
                 </ion-item>
               </ion-col>
             </ion-row>
@@ -155,15 +155,7 @@
             (click)=" actualizarInmueble()"
           >
             ACTUALIZAR
-          </ion-button>
-
-          <ion-button
-            class="ion-float-left ion-margin-top"
-            fill="solid"
-            color="danger"
-          >
-            ELIMINAR
-          </ion-button>
+          </ion-button> 
         </ion-card-content>
       </ion-card>
     </ion-card-content>

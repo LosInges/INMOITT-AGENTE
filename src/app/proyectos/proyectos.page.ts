@@ -57,9 +57,8 @@ export class ProyectosPage implements OnInit {
         console.log(proyectos)
       })
     })
-  }
-
-
+  } 
+  
   verInmueble(inmueble: Inmueble) {
     this.router.navigate([
       'proyectos',
@@ -68,25 +67,7 @@ export class ProyectosPage implements OnInit {
       'inmueble',
       inmueble.titulo,
     ]);
-  }
-
-  // verInmueblesAgente(){
-  //   this.sessionService.get('rfc').then((rfc) => {
-  //     if (rfc) {
-  //       this.agenteService.getInmueblesAgente(rfc).subscribe((inmuebles) => {
-  //         this.inmuebles = inmuebles.filter((inmueble) => !inmueble.borrado);
-  //       });
-  //       this.sessionService.get('inmobiliaria').then((inmobiliaria)=>{
-  //         this.agenteService.getAgente(inmobiliaria, rfc).subscribe((agente) => {
-  //           this.agente = agente;
-  //           console.log(agente);
-  //           this.apellidoPat = agente.apellido.split(' ')[0];
-  //           this.apellidoMat = agente.apellido.split(' ')[1];
-  //         });
-  //       })
-  //     }
-  //   });
-  // }
+  } 
 
   verProyecto(proyecto: Proyecto){
   this.router.navigate(['./','inmuebles',proyecto.nombre],{relativeTo:this.activatedRoute})
