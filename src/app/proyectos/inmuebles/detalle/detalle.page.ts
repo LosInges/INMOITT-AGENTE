@@ -6,7 +6,7 @@ import { ModalController, AlertController } from '@ionic/angular';
 import { Inmueble } from 'src/app/interfaces/inmueble';
 import { InmuebleService } from 'src/app/services/inmueble.service';
 import { Notario } from 'src/app/interfaces/notario';
-import { NotarioService } from 'src/app/services/notario.service'; 
+import { NotarioService } from 'src/app/services/notario.service';
 import { ProyectosService } from 'src/app/services/proyectos.service';
 import { SessionService } from 'src/app/services/session.service';
 import { environment } from 'src/environments/environment';
@@ -44,12 +44,12 @@ export class DetallePage implements OnInit {
   };
 
   api = environment.api;
-  
+
   constructor(
-    private inmuebleService: InmuebleService, 
-    private modalController: ModalController, 
+    private inmuebleService: InmuebleService,
+    private modalController: ModalController,
     private sessionService: SessionService,
-    private activatedRoute: ActivatedRoute, 
+    private activatedRoute: ActivatedRoute,
     private alertCtrl: AlertController,
     private notarioService: NotarioService,
     private proyectosService: ProyectosService
@@ -102,15 +102,15 @@ export class DetallePage implements OnInit {
       this.inmueble.cuartos <= 0 ||
       this.inmueble.metros_cuadrados <= 0 ||
       this.inmueble.descripcion.trim().length <= 0 ||
-      this.inmueble.servicios.length <= 0 || 
-      this.inmueble.precio_venta <= 0 
+      this.inmueble.servicios.length <= 0 ||
+      this.inmueble.precio_venta <= 0
     ){
       this.mostrarAlerta("Error", "Campos vacios", "No deje espacios en blanco.")
     }else{
       this.inmuebleService
       .postInmueble(this.inmueble)
       .subscribe((res) => console.log(res));
-    } 
+    }
   }
 
   async verPosicion(position: Direccion) {
