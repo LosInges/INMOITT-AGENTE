@@ -6,14 +6,16 @@
 
 .miubicacion {
   position: fixed;
-  bottom: 0px;
+  bottom: 1%;
+  margin-left: 1%;
   background-color: #ffd740;
 }
 
 .aceptar {
   position: fixed;
-  top: 50px;
+  top: 20px;
   right: 5px;
+  font-size: 24px;
   background-color: #80d894;
 }
 
@@ -24,7 +26,11 @@
 }
 
 .controls {
-  width: 80%;
+  width: 50%;
+  margin-top: 1%;
+  margin-left: 1%;
   font-size: 24px;
+  outline: #3880ff;
   padding: 10px;
+  color: #fff !important; 
 }

@@ -78,7 +78,7 @@ export class InmueblesPage implements OnInit {
                     params.proyecto
                   )
                   .subscribe((inmuebles) => {
-                    this.inmuebles = inmuebles;
+                    this.inmuebles = inmuebles.filter(inmueble => !inmueble.borrado);
                   });
               }
             });
@@ -125,6 +125,7 @@ export class InmueblesPage implements OnInit {
       });
     });
   }
+
   consultarInmuebles() {
     this.inmuebleService
       .getInmueblesProyecto(this.proyecto, this.inmobiliaria)

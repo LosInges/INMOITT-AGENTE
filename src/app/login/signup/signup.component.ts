@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -15,9 +14,9 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./signup.component.scss'],
 })
 export class SignupComponent implements OnInit {
-  apellidoPat: string = ''
-  apellidoMat: string = ''
-  inmobiliarias: Inmobiliaria[]
+  apellidoPat = '';
+  apellidoMat = '';
+  inmobiliarias: Inmobiliaria[];
   agente: Agente = {
     rfc: '',
     inmobiliaria: '',
@@ -26,7 +25,7 @@ export class SignupComponent implements OnInit {
     password: '',
     apellido: '',
     telefono: '',
-    foto: ''
+    foto: '',
   };
   confirmPassword = '';
 
@@ -38,27 +37,26 @@ export class SignupComponent implements OnInit {
     private agenteService: AgenteService,
     private modalController: ModalController,
     private alertCtrl: AlertController,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {}
 
   async mostrarAlerta(titulo: string, subtitulo: string, mensaje: string) {
     const alert = await this.alertCtrl.create({
       header: titulo,
       subHeader: subtitulo,
       message: mensaje,
-      buttons: ['OK']
+      buttons: ['OK'],
     });
     await alert.present();
     const result = await alert.onDidDismiss();
     console.log(result);
-    this.router.navigate(['/', 'login'])
+    this.router.navigate(['/', 'login']);
   }
 
-
   ngOnInit() {
-    this.inmobiliariaService.getInmobiliarias()?.subscribe(inmobiliarias => {
-      this.inmobiliarias = inmobiliarias
-    })
+    this.inmobiliariaService.getInmobiliarias()?.subscribe((inmobiliarias) => {
+      this.inmobiliarias = inmobiliarias;
+    });
   }
 
   onSubmit() {
@@ -71,23 +69,35 @@ export class SignupComponent implements OnInit {
       this.agente.password.trim().length <= 0 ||
       this.agente.telefono.trim().length <= 0
     ) {
-      this.mostrarAlerta("Error", "Campos vacios", "No deje espacios en blanco.")
+      this.mostrarAlerta(
+        'Error',
+        'Campos vacios',
+        'No deje espacios en blanco.'
+      );
     } else {
       if (this.confirmPassword === this.agente.password) {
         this.agente.apellido = this.apellidoPat + ' ' + this.apellidoMat;
-        this.agenteService.postAgente(this.agente).subscribe(res => {
-          console.log(res)
-          if (res.results) this.modalController.dismiss()
-          else console.log(res)
-          this.mostrarAlerta("Completado", "Creación", "Cliente creado exitosamente.")
+        this.agenteService.postAgente(this.agente).subscribe((res) => {
+          console.log(res);
+          if (res.results) {this.modalController.dismiss();}
+          else {console.log(res);}
+          this.mostrarAlerta(
+            'Completado',
+            'Creación',
+            'Cliente creado exitosamente.'
+          );
           window.location.reload();
-        })
+        });
       } else {
-        this.mostrarAlerta("Error:", "Confirmación de clave incorrecta", "¿es correcta o esta vacia?")
+        this.mostrarAlerta(
+          'Error:',
+          'Confirmación de clave incorrecta',
+          '¿es correcta o esta vacia?'
+        );
       }
     }
   }
   cerrar() {
-    this.modalController.dismiss()
+    this.modalController.dismiss();
   }
 }

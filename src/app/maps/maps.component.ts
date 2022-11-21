@@ -11,7 +11,7 @@ import { ModalController } from '@ionic/angular';
 import { MapsService } from '../services/maps.service';
 import { Geolocation } from '@capacitor/geolocation';
 import { DOCUMENT } from '@angular/common';
-import { Direccion } from '../fletes/interfaces/direccion';
+import { Direccion } from '../interfaces/direccion';
 
 declare let google: any;
 
