@@ -34,10 +34,10 @@ export class DetallePage implements OnInit {
     estado: '',
     cuartos: 0,
     descripcion: '',
-   direccion: {
-    lat: 0,
-    lng: 0
-   },
+    direccion: {
+      lat: 0,
+      lng: 0,
+    },
     foto: '',
     metros_cuadrados: 0,
     notario: '',
@@ -49,6 +49,7 @@ export class DetallePage implements OnInit {
     borrado: false,
     visible: true,
   };
+
   constructor(
     private inmuebleService: InmuebleService,
     private modalController: ModalController,
@@ -65,7 +66,7 @@ export class DetallePage implements OnInit {
       header: titulo,
       subHeader: subtitulo,
       message: mensaje,
-      buttons: ['OK']
+      buttons: ['OK'],
     });
     await alert.present();
     const result = await alert.onDidDismiss();
@@ -150,6 +151,7 @@ export class DetallePage implements OnInit {
       );
     });
   }
+
   eliminar(imagen: Imagen) {
     this.alertCtrl
       .create({
@@ -161,13 +163,7 @@ export class DetallePage implements OnInit {
           {
             text: 'SI',
             handler: () => {
-              this.inmuebleService.deleteImagen(imagen).subscribe((val) => {
-                if (val.results) {
-                  this.imagenes = this.imagenes.filter((img) => img != imagen);
-                } else {
-                  console.log(val);
-                }
-              });
+              this.eliminarFoto(imagen);
             },
           },
         ],
@@ -178,7 +174,6 @@ export class DetallePage implements OnInit {
   }
 
   actualizarInmueble() {
-
     if (
       this.inmueble.inmobiliaria.trim().length <= 0 ||
       this.inmueble.titulo.trim().length <= 0 ||
@@ -190,12 +185,16 @@ export class DetallePage implements OnInit {
       this.inmueble.descripcion.trim().length <= 0 ||
       this.inmueble.servicios.length <= 0 ||
       this.inmueble.precio_venta <= 0
-    ){
-      this.mostrarAlerta("Error", "Campos vacios", "No deje espacios en blanco.")
-    }else{
+    ) {
+      this.mostrarAlerta(
+        'Error',
+        'Campos vacios',
+        'No deje espacios en blanco.'
+      );
+    } else {
       this.inmuebleService
-      .postInmueble(this.inmueble)
-      .subscribe((res) => console.log(res));
+        .postInmueble(this.inmueble)
+        .subscribe((res) => console.log(res));
     }
   }
 
@@ -203,7 +202,7 @@ export class DetallePage implements OnInit {
     const modal = await this.modalController.create({
       component: MapsComponent,
       componentProps: { position },
-      cssClass: 'modalGeneral'
+      cssClass: 'modalGeneral',
     });
     return modal.present();
   }
@@ -220,11 +219,23 @@ export class DetallePage implements OnInit {
     });
     return modal.present();
   }
+
   eliminarInmueble() {
-    this.inmuebleService
-      .deleteInmueble(this.inmueble)
-      .subscribe((resultado) => {
-        console.log(resultado);
-      });
+    this.imagenes.forEach((imagen) => this.eliminarFoto(imagen));
+    this.clientes.forEach((cliente) => {
+      this.inmueble.cliente = cliente;
+      this.inmuebleService
+        .deleteInmuebleCliente(this.inmueble)
+        .subscribe(() => {});
+    });
+    this.inmuebleService.deleteInmueble(this.inmueble).subscribe(() => {});
+  }
+
+  eliminarFoto(imagen: Imagen) {
+    this.inmuebleService.deleteImagen(imagen).subscribe((res) => {
+      if (res.results) {
+        this.imagenes = this.imagenes.filter((img) => img !== imagen);
+      }
+    });
   }
 }
