@@ -78,7 +78,9 @@ export class InmueblesPage implements OnInit {
                     params.proyecto
                   )
                   .subscribe((inmuebles) => {
-                    this.inmuebles = inmuebles.filter(inmueble => !inmueble.borrado);
+                    this.inmuebles = inmuebles.filter(
+                      (inmueble) => !inmueble.borrado
+                    );
                   });
               }
             });
@@ -88,42 +90,47 @@ export class InmueblesPage implements OnInit {
     });
   }
 
-
   verInmueble(titulo: string) {
     this.router.navigate(['./', 'detalle', titulo], {
       relativeTo: this.activatedRoute,
     });
   }
 
-
-  eliminarInmueble(inmueble: Inmueble){
+  eliminarInmueble(inmueble: Inmueble) {
     this.inmuebleService
-    .getClientesInmueble(this.inmobiliaria, this.proyecto, inmueble.titulo)
-    .subscribe((clientes) => {
-      clientes.forEach((cliente) => {
-        inmueble.cliente = cliente;
-        this.inmuebleService.deleteInmuebleCliente(inmueble);
+      .getFotos(inmueble.inmobiliaria, inmueble.proyecto, inmueble.titulo)
+      .subscribe((imagenes) => {
+        imagenes.forEach((imagen) =>
+          this.inmuebleService.deleteImagen(imagen).subscribe(() => {})
+        );
       });
-      this.inmuebleService.deleteInmueble(inmueble).subscribe((valor) => {
-        if (valor.results) {
-          this.inmuebles = this.inmuebles.filter(
-            (inmuebleIterable) => inmueble !== inmuebleIterable
-          );
-          this.alertConttroller.create({
-            header: 'ÉXITOSAME',
-            message: 'Se eliminó el INMUEBLE',
-            buttons: ['CERRAR'],
-          });
-        } else {
-          this.alertConttroller.create({
-            header: 'ERROR',
-            message: 'NO se pudo elminar el INMUEBLE',
-            buttons: ['CERRAR'],
-          });
-          console.log(valor);
-        }
+    this.inmuebleService
+      .getClientesInmueble(this.inmobiliaria, this.proyecto, inmueble.titulo)
+      .subscribe((clientes) => {
+        clientes.forEach((cliente) => {
+          inmueble.cliente = cliente.cliente;
+          this.inmuebleService.deleteInmuebleCliente(inmueble);
+        });
+        this.inmuebleService.deleteInmueble(inmueble).subscribe((valor) => {
+          if (valor.results) {
+            this.inmuebles = this.inmuebles.filter(
+              (inmuebleIterable) => inmueble !== inmuebleIterable
+            );
+            this.alertConttroller.create({
+              header: 'ÉXITOSAME',
+              message: 'Se eliminó el INMUEBLE',
+              buttons: ['CERRAR'],
+            });
+          } else {
+            this.alertConttroller.create({
+              header: 'ERROR',
+              message: 'NO se pudo elminar el INMUEBLE',
+              buttons: ['CERRAR'],
+            });
+            console.log(valor);
+          }
+        });
       });
-    });
   }
 
   consultarInmuebles() {
@@ -136,10 +143,10 @@ export class InmueblesPage implements OnInit {
       });
   }
   async agregarInmueble() {
-    this.router.navigate(['./', 'registro'],{relativeTo: this.activatedRoute})
+    this.router.navigate(['./', 'registro'], {
+      relativeTo: this.activatedRoute,
+    });
   }
-
-
 
   // verInmueblesAgente(){
   //   this.sessionService.get('rfc').then((rfc) => {
@@ -158,5 +165,4 @@ export class InmueblesPage implements OnInit {
   //     }
   //   });
   // }
-
 }

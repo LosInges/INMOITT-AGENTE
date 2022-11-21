@@ -1,12 +1,16 @@
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
-import { MapsComponent } from 'src/app/maps/maps.component';
+
+import { AgenteService } from 'src/app/services/agente.service';
 import { Direccion } from 'src/app/interfaces/direccion';
-import { ModalController, AlertController } from '@ionic/angular';
+import { FotoService } from './../../../services/foto.service';
+import { Imagen } from 'src/app/interfaces/imagen';
 import { Inmueble } from 'src/app/interfaces/inmueble';
 import { InmuebleService } from 'src/app/services/inmueble.service';
+import { MapsComponent } from 'src/app/maps/maps.component';
 import { Notario } from 'src/app/interfaces/notario';
-import { NotarioService } from 'src/app/services/notario.service'; 
+import { NotarioService } from 'src/app/services/notario.service';
 import { ProyectosService } from 'src/app/services/proyectos.service';
 import { SessionService } from 'src/app/services/session.service';
 import { environment } from 'src/environments/environment';
@@ -18,8 +22,11 @@ import { environment } from 'src/environments/environment';
 })
 export class DetallePage implements OnInit {
   correo: string = '';
+  api = environment.api;
+  imagenes: Imagen[] = [];
+  clientes: string[];
   inmuebles: Inmueble[] = [];
-  notarios: Notario[]=[];
+  notarios: Notario[] = [];
   inmueble: Inmueble = {
     inmobiliaria: '',
     proyecto: '',
@@ -27,10 +34,10 @@ export class DetallePage implements OnInit {
     estado: '',
     cuartos: 0,
     descripcion: '',
-   direccion: {
-    lat: 0,
-    lng: 0
-   },
+    direccion: {
+      lat: 0,
+      lng: 0,
+    },
     foto: '',
     metros_cuadrados: 0,
     notario: '',
@@ -43,16 +50,15 @@ export class DetallePage implements OnInit {
     visible: true,
   };
 
-  api = environment.api;
-  
   constructor(
-    private inmuebleService: InmuebleService, 
-    private modalController: ModalController, 
+    private inmuebleService: InmuebleService,
+    private modalController: ModalController,
     private sessionService: SessionService,
-    private activatedRoute: ActivatedRoute, 
+    private activatedRoute: ActivatedRoute,
     private alertCtrl: AlertController,
     private notarioService: NotarioService,
-    private proyectosService: ProyectosService
+    private proyectosService: ProyectosService,
+    private fotoService: FotoService
   ) {}
 
   async mostrarAlerta(titulo: string, subtitulo: string, mensaje: string) {
@@ -60,7 +66,7 @@ export class DetallePage implements OnInit {
       header: titulo,
       subHeader: subtitulo,
       message: mensaje,
-      buttons: ['OK']
+      buttons: ['OK'],
     });
     await alert.present();
     const result = await alert.onDidDismiss();
@@ -74,16 +80,42 @@ export class DetallePage implements OnInit {
         this.activatedRoute.params.subscribe((params) => {
           console.log(params);
           if (params.proyecto && params.titulo) {
-            this.proyectosService.getNotariosProyecto(params.proyecto, inmobiliaria).subscribe(a=>{
-              a.forEach(notario => this.notarioService.getNotario(inmobiliaria, notario.notario).subscribe(n=>{
-                this.notarios.push(n)
-              }))
-            })
+            this.proyectosService
+              .getNotariosProyecto(params.proyecto, inmobiliaria)
+              .subscribe((a) => {
+                a.forEach((notario) =>
+                  this.notarioService
+                    .getNotario(inmobiliaria, notario.notario)
+                    .subscribe((n) => {
+                      this.notarios.push(n);
+                    })
+                );
+              });
             this.inmuebleService
               .getInmueble(inmobiliaria, params.proyecto, params.titulo)
               .subscribe((inmueble) => {
                 this.inmueble = inmueble;
                 console.log(inmueble);
+                this.inmuebleService
+                  .getClientesInmueble(
+                    inmueble.inmobiliaria,
+                    inmueble.proyecto,
+                    inmueble.titulo
+                  )
+                  .subscribe((clientes) => {
+                    this.clientes = [];
+                    clientes.forEach((cliente) =>
+                      this.clientes.push(cliente.cliente)
+                    );
+                    console.log(this.clientes);
+                  });
+                this.inmuebleService
+                  .getFotos(
+                    inmueble.inmobiliaria,
+                    inmueble.proyecto,
+                    inmueble.titulo
+                  )
+                  .subscribe((imagenes) => (this.imagenes = imagenes));
               });
           }
         });
@@ -91,8 +123,57 @@ export class DetallePage implements OnInit {
     });
   }
 
-  actualizarInmueble() {
+  agregarFotoGaleria() {
+    this.fotoService.tomarFoto().then((photo) => {
+      const reader = new FileReader();
+      const datos = new FormData();
+      reader.onload = () => {
+        const imgBlob = new Blob([reader.result], {
+          type: `image/${photo.format}`,
+        });
+        datos.append('img', imgBlob, `imagen.${photo.format}`);
+        this.fotoService.subirImg(datos).subscribe((res) => {
+          const imagen = {
+            inmobiliaria: this.inmueble.inmobiliaria,
+            proyecto: this.inmueble.proyecto,
+            titulo: this.inmueble.titulo,
+            ruta: res.path,
+          };
+          this.inmuebleService.postFotos(imagen).subscribe((val) => {
+            if (val.results) {
+              this.imagenes.push(imagen);
+            }
+          });
+        });
+      };
+      fetch(photo.webPath).then((v) =>
+        v.blob().then((imagen) => reader.readAsArrayBuffer(imagen))
+      );
+    });
+  }
 
+  eliminar(imagen: Imagen) {
+    this.alertCtrl
+      .create({
+        header: 'ALTO',
+        subHeader: '¿Está seguro? ',
+        message: '¿Desea eliminar la imagen?',
+        buttons: [
+          'NO',
+          {
+            text: 'SI',
+            handler: () => {
+              this.eliminarFoto(imagen);
+            },
+          },
+        ],
+      })
+      .then((alert) => {
+        alert.present();
+      });
+  }
+
+  actualizarInmueble() {
     if (
       this.inmueble.inmobiliaria.trim().length <= 0 ||
       this.inmueble.titulo.trim().length <= 0 ||
@@ -102,22 +183,26 @@ export class DetallePage implements OnInit {
       this.inmueble.cuartos <= 0 ||
       this.inmueble.metros_cuadrados <= 0 ||
       this.inmueble.descripcion.trim().length <= 0 ||
-      this.inmueble.servicios.length <= 0 || 
-      this.inmueble.precio_venta <= 0 
-    ){
-      this.mostrarAlerta("Error", "Campos vacios", "No deje espacios en blanco.")
-    }else{
+      this.inmueble.servicios.length <= 0 ||
+      this.inmueble.precio_venta <= 0
+    ) {
+      this.mostrarAlerta(
+        'Error',
+        'Campos vacios',
+        'No deje espacios en blanco.'
+      );
+    } else {
       this.inmuebleService
-      .postInmueble(this.inmueble)
-      .subscribe((res) => console.log(res));
-    } 
+        .postInmueble(this.inmueble)
+        .subscribe((res) => console.log(res));
+    }
   }
 
   async verPosicion(position: Direccion) {
     const modal = await this.modalController.create({
       component: MapsComponent,
       componentProps: { position },
-      cssClass: 'modalGeneral'
+      cssClass: 'modalGeneral',
     });
     return modal.present();
   }
@@ -133,5 +218,24 @@ export class DetallePage implements OnInit {
       }
     });
     return modal.present();
+  }
+
+  eliminarInmueble() {
+    this.imagenes.forEach((imagen) => this.eliminarFoto(imagen));
+    this.clientes.forEach((cliente) => {
+      this.inmueble.cliente = cliente;
+      this.inmuebleService
+        .deleteInmuebleCliente(this.inmueble)
+        .subscribe(() => {});
+    });
+    this.inmuebleService.deleteInmueble(this.inmueble).subscribe(() => {});
+  }
+
+  eliminarFoto(imagen: Imagen) {
+    this.inmuebleService.deleteImagen(imagen).subscribe((res) => {
+      if (res.results) {
+        this.imagenes = this.imagenes.filter((img) => img !== imagen);
+      }
+    });
   }
 }

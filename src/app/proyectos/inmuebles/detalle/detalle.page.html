@@ -38,7 +38,7 @@
               </ion-col>
 
               <ion-col class="ion-margin-top ion-margin-bottom">
-                <ion-item> 
+                <ion-item>
                   <ion-img *ngIf="inmueble.foto" src="{{ api }}/{{ inmueble.foto }}"></ion-img>
                 </ion-item>
               </ion-col>
@@ -80,10 +80,10 @@
               <ion-col>
                 <ion-item>
                   <ion-button size="default" (click)="verPosicion(inmueble.direccion)">Ver dirección</ion-button>
-                 
+
                   <ion-button size="default" (click)="guardarDireccion()">Seleccionar dirección</ion-button>
                 </ion-item>
-              </ion-col>  
+              </ion-col>
 
               <ion-col>
                 <ion-item>
@@ -155,9 +155,33 @@
             (click)=" actualizarInmueble()"
           >
             ACTUALIZAR
-          </ion-button> 
+          </ion-button>
+          <ion-button
+            class="ion-float-left ion-margin-top"
+            fill="solid"
+            color="danger"
+            (click)="eliminarInmueble()"
+          >
+            ELIMINAR
+          </ion-button>
         </ion-card-content>
       </ion-card>
     </ion-card-content>
+
+    <ion-button (click)="agregarFotoGaleria()">AGREGAR FOTO</ion-button>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="3" *ngFor="let imagen of imagenes">
+          <ion-img src="{{api}}/{{imagen.ruta}}" (click)="eliminar(imagen)"></ion-img>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-card>
+
+  <ion-label>CLIENTES</ion-label>
+  <ion-list>
+    <ion-item *ngFor="let cliente of clientes">
+      <ion-label> {{cliente}} </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
