@@ -20,55 +20,60 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private alertCtrl: AlertController,
     private modalController: ModalController
-  ) { }
+  ) {}
 
   async mostrarAlerta(titulo: string, subtitulo: string, mensaje: string) {
     const alert = await this.alertCtrl.create({
       header: titulo,
       subHeader: subtitulo,
       message: mensaje,
-      buttons: ['OK']
+      buttons: ['OK'],
     });
     await alert.present();
     const result = await alert.onDidDismiss();
-    console.log(result); 
+    console.log(result);
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   onSubmit() {
     alert(this.email + ', ' + this.password);
   }
 
   login() {
-    if (
-      this.email.trim().length <= 0 ||
-      this.password.trim().length <= 0
-    ) {
-      this.mostrarAlerta("Error", "Campos vacios", "No deje espacios en blanco.")
-    }else{
+    if (this.email.trim().length <= 0 || this.password.trim().length <= 0) {
+      this.mostrarAlerta(
+        'Error',
+        'Campos vacios',
+        'No deje espacios en blanco.'
+      );
+    } else {
       this.loginService.login(this.email, this.password).subscribe(
         (res) => {
           if (res.session.tipo !== 'agente') {
             console.log('NO es agente');
-            this.mostrarAlerta("Error:", "Correo inválido", "Recuerde bien su correo y contraseña")
+            this.mostrarAlerta(
+              'Error:',
+              'RFC inválido',
+              'Recuerde bien su RFC y contraseña'
+            );
             return;
           }
           const promesas: Promise<any>[] = [
             this.sessionService.clear(),
             this.sessionService.set('rfc', res.session.email),
             this.sessionService.set('tipo', res.session.tipo),
-            this.sessionService.set('inmobiliaria', res.session.empresa)
+            this.sessionService.set('inmobiliaria', res.session.empresa),
           ];
-  
+
           Promise.all(promesas).then((res) => {
-            this.cerrar()
-            this.router.navigate(['/', 'perfil'])
+            this.cerrar();
+            this.router.navigate(['/', 'perfil']);
           });
         },
         (err) => console.log(err)
       );
-    } 
+    }
   }
 
   cerrar() {
