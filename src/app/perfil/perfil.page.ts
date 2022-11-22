@@ -58,7 +58,7 @@ export class PerfilPage implements OnInit {
       header: titulo,
       subHeader: subtitulo,
       message: mensaje,
-      buttons: ['OK']
+      buttons: ['OK'],
     });
     await alert.present();
     const result = await alert.onDidDismiss();
@@ -100,17 +100,19 @@ export class PerfilPage implements OnInit {
       this.agente.telefono.trim().length <= 0 ||
       this.agente.foto.length <= 0
     ) {
-      this.mostrarAlerta("Error", "Campos vacios", "No deje espacios en blanco.")
+      this.mostrarAlerta(
+        'Error',
+        'Campos vacios',
+        'No deje espacios en blanco.'
+      );
     } else {
-      let alert: HTMLIonAlertElement;
-      alert = await this.alertController.create({
+      const alert = await this.alertController.create({
         header: 'Confirmar Contraseña',
         inputs: [
           {
             name: 'password',
             placeholder: 'Contraseña',
             type: 'password',
-
           },
         ],
         buttons: [
@@ -123,55 +125,88 @@ export class PerfilPage implements OnInit {
             role: 'accept',
             handler: (data) => {
               if (data.password === this.agente.password) {
-                this.agente.apellido = this.apellidoPat + ' ' + this.apellidoMat
-                this.agenteService
-                .postAgente(this.agente)
-                .subscribe((res) => console.log(res)); 
-              }
-              else {
-                this.alertController.create({
-                  header: 'Contraseña',
-                  message: 'Contraseña INCORRECTA',
-                  buttons: ['Aceptar'],
-                }).then(a => a.present());
+                this.agente.apellido =
+                  this.apellidoPat + ' ' + this.apellidoMat;
+                this.agenteService.postAgente(this.agente).subscribe((res) => {
+                  if (res.results) {
+                    this.alertController
+                      .create({
+                        header: 'EXITO',
+                        message: 'Actualizado correctamente',
+                        buttons: ['Aceptar'],
+                      })
+                      .then((a) => a.present());
+                  }
+                });
+              } else {
+                this.alertController
+                  .create({
+                    header: 'Contraseña',
+                    message: 'Contraseña INCORRECTA',
+                    buttons: ['Aceptar'],
+                  })
+                  .then((a) => a.present());
               }
             },
           },
         ],
       });
-      await alert.present();
+      return alert.present();
     }
   }
 
-  async presentAlert(mensaje) {
+  async presentarAlert() {
     const alert = await this.alertController.create({
-      header: this.mensaje,
-      cssClass: 'custom-alert',
+      header: 'Confirmar Contraseña',
+      inputs: [
+        {
+          name: 'password',
+          placeholder: 'Contraseña',
+          type: 'password',
+        },
+      ],
       buttons: [
         {
-          text: 'NO',
-          cssClass: 'alert-button-cancel',
+          text: 'Cancelar',
+          role: 'cancel',
         },
         {
-          text: 'OK',
-          cssClass: 'alert-button-confirm',
+          text: 'Aceptar',
+          role: 'accept',
         },
       ],
     });
-
-    await alert.present();
+    alert.onDidDismiss().then((data) => {
+      if (this.agente.password == data.data.values.password) {
+        this.agenteService
+          .deleteAgente(this.agente.rfc, this.agente.inmobiliaria)
+          ?.subscribe((val) => {
+            if (val.results) {
+              this.sessionService.clear().then(() => {
+                this.router.navigate(['']);
+              });
+            } else {
+              this.mostrarAlerta(
+                'Error',
+                'Fallo en eliminación de cuenta',
+                'Intente de nuevo'
+              );
+              console.log(val);
+            }
+          });
+      } else {
+        this.mostrarAlerta(
+          'Error:',
+          'Confirmación de clave incorrecta',
+          '¿es correcta o esta vacia?'
+        );
+      }
+    });
+    return alert.present();
   }
 
   eliminarPerfil() {
-    if (this.confirmPassword === this.agente.password) {
-      this.agenteService.deleteAgente(this.agente.rfc).subscribe((res) => {
-        if (res.results) {
-          this.sessionService.clear().then(() => this.router.navigate(['']));
-        } else {
-          console.log(res);
-        }
-      });
-    }
+    this.presentarAlert();
   }
 
   tomarFotografia() {
