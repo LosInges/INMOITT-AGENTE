@@ -9,9 +9,11 @@
       <ion-list>
         <ion-item-sliding *ngFor="let proyecto of proyectos" #itemSliding>
           <ion-item>
-           <ion-label>{{proyecto.nombre}}</ion-label>
+            <ion-label class="ion-text-center">{{proyecto.nombre}}</ion-label>
 
-            <ion-label class="centrado">{{ proyecto.ciudad }} </ion-label>
+            <ion-label class="ion-text-center"
+              >{{ proyecto.ciudad }}
+            </ion-label>
           </ion-item>
           <ion-item-options
             side="start"

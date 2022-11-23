@@ -18,9 +18,9 @@
         <ion-card-content>
           <ion-grid>
             <ion-row>
-              <ion-col size="1" >
+              <ion-col size-xs="12" size-xl="2">
+                <img *ngIf="agente.foto" src="{{api}}/{{agente.foto}}" />
                 <ion-item>
-                  <img *ngIf="agente.foto" src="{{api}}/{{agente.foto}}">
                   <ion-buttons>
                     <ion-button expand="full" (click)="tomarFotografia()">
                       TOMAR FOTO
@@ -28,8 +28,8 @@
                   </ion-buttons>
                 </ion-item>
               </ion-col>
-              <ion-col>
-                <ion-item >
+              <ion-col size-xs="12" size-xl="auto">
+                <ion-item>
                   <ion-input
                     [(ngModel)]="agente.rfc"
                     type="text"
@@ -42,8 +42,8 @@
                 </ion-item>
               </ion-col>
 
-              <ion-col>
-                <ion-item >
+              <ion-col size-xs="12" size-xl="4">
+                <ion-item>
                   <ion-input
                     [(ngModel)]="agente.password"
                     type="password"
@@ -55,20 +55,6 @@
                   </ion-label>
                 </ion-item>
               </ion-col>
-
-              <!-- <ion-col>
-                <ion-item >
-                  <ion-input
-                    [(ngModel)]="confirmPassword"
-                    type="text"
-                    required
-                    placeholder="Confirmar Contraseña"
-                  ></ion-input>
-                  <ion-label>
-                    <ion-icon name="lock-closed"></ion-icon>
-                  </ion-label>
-                </ion-item>
-              </ion-col>-->
             </ion-row>
           </ion-grid>
         </ion-card-content>
@@ -81,8 +67,8 @@
         <ion-card-content>
           <ion-grid>
             <ion-row>
-              <ion-col>
-                <ion-item >
+              <ion-col size-xs="12" size-xl="4">
+                <ion-item>
                   <ion-input
                     [(ngModel)]="agente.nombre"
                     type="text"
@@ -95,8 +81,8 @@
                 </ion-item>
               </ion-col>
 
-              <ion-col>
-                <ion-item >
+              <ion-col size-xs="12" size-xl="4">
+                <ion-item>
                   <ion-input
                     [(ngModel)]="apellidoPat"
                     type="text"
@@ -109,8 +95,8 @@
                 </ion-item>
               </ion-col>
 
-              <ion-col>
-                <ion-item >
+              <ion-col size-xs="12" size-xl="4">
+                <ion-item>
                   <ion-input
                     [(ngModel)]="apellidoMat"
                     type="text"
@@ -124,9 +110,9 @@
               </ion-col>
             </ion-row>
 
-            <ion-row> 
-              <ion-col>
-                <ion-item >
+            <ion-row>
+              <ion-col size-xs="12" size-xl="4">
+                <ion-item>
                   <ion-input
                     [(ngModel)]="agente.correo"
                     type="text"
@@ -139,9 +125,8 @@
                 </ion-item>
               </ion-col>
 
-
-              <ion-col>
-                <ion-item >
+              <ion-col size-xs="12" size-xl="4">
+                <ion-item>
                   <ion-input
                     [(ngModel)]="agente.telefono"
                     type="text"
@@ -154,8 +139,8 @@
                 </ion-item>
               </ion-col>
 
-              <ion-col>
-                <ion-item >
+              <ion-col size-xs="auto">
+                <ion-item>
                   <ion-icon
                     style="padding: 0 15px"
                     name="business-outline"

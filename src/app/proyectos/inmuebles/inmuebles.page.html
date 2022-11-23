@@ -6,7 +6,6 @@
     <ion-title>INMUEBLES</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="agregarInmueble()">Agregar Inmueble</ion-button>
-      
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -14,18 +13,12 @@
   <ion-list>
     <ion-item-sliding *ngFor="let inmueble of inmuebles" #itemSliding>
       <ion-item>
-        <ion-img  src="{{api}}/{{inmueble.foto}}"></ion-img>
+        <ion-img src="{{api}}/{{inmueble.foto}}"></ion-img>
 
-        <ion-label >{{inmueble.titulo}} </ion-label>
-        <ion-label *ngIf="inmueble.precio_venta>0"
-          >{{inmueble.precio_venta}}
-        </ion-label>
-        <ion-label *ngIf="inmueble.precio_renta>0"
-          >{{inmueble.precio_renta}}
-        </ion-label>
+        <ion-label class="ion-text-center">{{inmueble.titulo}} </ion-label>
       </ion-item>
-      <ion-item-options side="start"  (ionSwipe)="verInmueble(inmueble.titulo)">
-        <ion-item-option expandable color="success" >
+      <ion-item-options side="start" (ionSwipe)="verInmueble(inmueble.titulo)">
+        <ion-item-option expandable color="success">
           <ion-label>
             <ion-icon name="eye"></ion-icon>
           </ion-label>

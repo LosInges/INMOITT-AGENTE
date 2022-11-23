@@ -1,15 +1,12 @@
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { AlertController, ModalController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 
 import { Agente } from 'src/app/interfaces/agente';
 import { AgenteService } from 'src/app/services/agente.service';
+import { AlertController } from '@ionic/angular';
 import { Inmueble } from 'src/app/interfaces/inmueble';
 import { InmuebleService } from 'src/app/services/inmueble.service';
 import { Notario } from 'src/app/interfaces/notario';
-import { Proyecto } from 'src/app/interfaces/proyecto';
-import { ProyectosService } from 'src/app/services/proyectos.service';
-import { RegistroPage } from './registro/registro.page';
 import { ServiciosService } from 'src/app/services/servicios.service';
 import { SessionService } from 'src/app/services/session.service';
 import { environment } from 'src/environments/environment';
@@ -24,7 +21,7 @@ export class InmueblesPage implements OnInit {
   inmuebles: Inmueble[] = [];
   agentesProyecto: Agente[];
   notariosProyecto: Notario[];
-  servicios = this.serviciosService.getServicios();
+  servicios = this.servicioService.getServicios();
   inmobiliaria: string;
   api = environment.api;
   apellidoPat = '';
@@ -43,15 +40,12 @@ export class InmueblesPage implements OnInit {
 
   constructor(
     private router: Router,
-    private alertController: AlertController,
     private sessionService: SessionService,
     private activatedRoute: ActivatedRoute,
-    private proyectosService: ProyectosService,
     private inmuebleService: InmuebleService,
     private agenteService: AgenteService,
-    private modalController: ModalController,
-    private serviciosService: ServiciosService,
-    private alertConttroller: AlertController
+    private alertConttroller: AlertController,
+    private servicioService: ServiciosService
   ) {
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
