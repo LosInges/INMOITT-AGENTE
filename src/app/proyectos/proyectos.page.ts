@@ -51,14 +51,14 @@ export class ProyectosPage implements OnInit {
   }
 
   ngOnInit() {
-    this.sessionService.get('rfc').then((rfc)=>{
-      this.agenteService.getProyectos(rfc).subscribe((proyectos)=>{
-        this.proyectos = proyectos
-        console.log(proyectos)
-      })
-    })
-  } 
-  
+    this.sessionService.get('rfc').then((rfc) => {
+      this.agenteService.getProyectos(rfc).subscribe((proyectos) => {
+        this.proyectos = proyectos;
+        console.log(proyectos);
+      });
+    });
+  }
+
   verInmueble(inmueble: Inmueble) {
     this.router.navigate([
       'proyectos',
@@ -67,9 +67,12 @@ export class ProyectosPage implements OnInit {
       'inmueble',
       inmueble.titulo,
     ]);
-  } 
+  }
 
-  verProyecto(proyecto: Proyecto){
-  this.router.navigate(['./','inmuebles',proyecto.nombre],{relativeTo:this.activatedRoute})
+  verProyecto(proyecto: Proyecto) {
+    console.log(proyecto);
+    this.router.navigate(['./', 'inmuebles', proyecto.nombre], {
+      relativeTo: this.activatedRoute,
+    });
   }
 }

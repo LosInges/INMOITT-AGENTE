@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment.prod';
 import { Inmobiliaria } from '../interfaces/inmobiliaria';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class InmobiliariaService {
   }
 
   getInmobiliarias():Observable<Inmobiliaria[]>{
-    return this.httpClient.get<Inmobiliaria[]>(`${environment.api}/inmobiliarias`)  
+    return this.httpClient.get<Inmobiliaria[]>(`${environment.api}/inmobiliarias`)
   }
 
   deleteInmobiliaria(correo: string):Observable<any>{

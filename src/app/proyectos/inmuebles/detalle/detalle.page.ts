@@ -24,6 +24,8 @@ export class DetallePage implements OnInit {
   venta = false;
   renta = false;
   correo: string = '';
+  venta = false;
+  renta = false;
   api = environment.api;
   imagenes: Imagen[] = [];
   clientes: string[];
@@ -80,7 +82,6 @@ export class DetallePage implements OnInit {
       if (inmobiliaria) {
         //active route, url
         this.activatedRoute.params.subscribe((params) => {
-          console.log(params);
           if (params.proyecto && params.titulo) {
             this.proyectosService
               .getNotariosProyecto(params.proyecto, inmobiliaria)
@@ -92,34 +93,34 @@ export class DetallePage implements OnInit {
                       this.notarios.push(n);
                     })
                 );
-              });
-            this.inmuebleService
-              .getInmueble(inmobiliaria, params.proyecto, params.titulo)
-              .subscribe((inmueble) => {
-                this.inmueble = inmueble;
-                this.venta = inmueble.precio_venta > 0;
-                this.renta = inmueble.precio_renta > 0;
-                console.log(inmueble);
                 this.inmuebleService
-                  .getClientesInmueble(
-                    inmueble.inmobiliaria,
-                    inmueble.proyecto,
-                    inmueble.titulo
-                  )
-                  .subscribe((clientes) => {
-                    this.clientes = [];
-                    clientes.forEach((cliente) =>
-                      this.clientes.push(cliente.cliente)
-                    );
-                    console.log(this.clientes);
+                  .getInmueble(inmobiliaria, params.proyecto, params.titulo)
+                  .subscribe((inmueble) => {
+                    this.inmueble = inmueble;
+                    this.renta = inmueble.precio_renta > 0;
+                    this.venta = inmueble.precio_venta > 0;
+                    console.log(inmueble);
+                    this.inmuebleService
+                      .getClientesInmueble(
+                        inmueble.inmobiliaria,
+                        inmueble.proyecto,
+                        inmueble.titulo
+                      )
+                      .subscribe((clientes) => {
+                        this.clientes = [];
+                        clientes.forEach((cliente) =>
+                          this.clientes.push(cliente.cliente)
+                        );
+                        console.log(this.clientes);
+                      });
+                    this.inmuebleService
+                      .getFotos(
+                        inmueble.inmobiliaria,
+                        inmueble.proyecto,
+                        inmueble.titulo
+                      )
+                      .subscribe((imagenes) => (this.imagenes = imagenes));
                   });
-                this.inmuebleService
-                  .getFotos(
-                    inmueble.inmobiliaria,
-                    inmueble.proyecto,
-                    inmueble.titulo
-                  )
-                  .subscribe((imagenes) => (this.imagenes = imagenes));
               });
           }
         });
@@ -156,6 +157,26 @@ export class DetallePage implements OnInit {
     });
   }
 
+  tomarFotografia() {
+    this.fotoService.tomarFoto().then((photo) => {
+      const reader = new FileReader();
+      const datos = new FormData();
+      reader.onload = () => {
+        const imgBlob = new Blob([reader.result], {
+          type: `image/${photo.format}`,
+        });
+        datos.append('img', imgBlob, `imagen.${photo.format}`);
+        this.fotoService.subirImgMiniatura(datos).subscribe((res) => {
+          this.inmueble.foto = res.miniatura;
+          console.log(this.api, this.inmueble.foto);
+        });
+      };
+      fetch(photo.webPath).then((v) =>
+        v.blob().then((imagen) => reader.readAsArrayBuffer(imagen))
+      );
+    });
+  }
+
   eliminar(imagen: Imagen) {
     this.alertController
       .create({
@@ -178,6 +199,8 @@ export class DetallePage implements OnInit {
   }
 
   actualizarInmueble() {
+    this.inmueble.precio_renta = this.renta ? this.inmueble.precio_renta : 0;
+    this.inmueble.precio_venta = this.renta ? this.inmueble.precio_venta : 0;
     if (
       this.inmueble.inmobiliaria.trim().length <= 0 ||
       this.inmueble.titulo.trim().length <= 0 ||
