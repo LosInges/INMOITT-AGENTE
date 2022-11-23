@@ -21,6 +21,8 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./detalle.page.scss'],
 })
 export class DetallePage implements OnInit {
+  venta = false;
+  renta = false;
   correo: string = '';
   venta = false;
   renta = false;
@@ -57,14 +59,14 @@ export class DetallePage implements OnInit {
     private modalController: ModalController,
     private sessionService: SessionService,
     private activatedRoute: ActivatedRoute,
-    private alertCtrl: AlertController,
+    private alertController: AlertController,
     private notarioService: NotarioService,
     private proyectosService: ProyectosService,
     private fotoService: FotoService
   ) {}
 
   async mostrarAlerta(titulo: string, subtitulo: string, mensaje: string) {
-    const alert = await this.alertCtrl.create({
+    const alert = await this.alertController.create({
       header: titulo,
       subHeader: subtitulo,
       message: mensaje,
@@ -91,7 +93,6 @@ export class DetallePage implements OnInit {
                       this.notarios.push(n);
                     })
                 );
-
                 this.inmuebleService
                   .getInmueble(inmobiliaria, params.proyecto, params.titulo)
                   .subscribe((inmueble) => {
@@ -177,7 +178,7 @@ export class DetallePage implements OnInit {
   }
 
   eliminar(imagen: Imagen) {
-    this.alertCtrl
+    this.alertController
       .create({
         header: 'ALTO',
         subHeader: '¿Está seguro? ',
@@ -210,7 +211,8 @@ export class DetallePage implements OnInit {
       this.inmueble.metros_cuadrados <= 0 ||
       this.inmueble.descripcion.trim().length <= 0 ||
       this.inmueble.servicios.length <= 0 ||
-      this.inmueble.precio_venta <= 0
+      (this.venta && this.inmueble.precio_venta <= 0) ||
+      (this.renta && this.inmueble.precio_renta <= 0)
     ) {
       this.mostrarAlerta(
         'Error',
@@ -252,15 +254,39 @@ export class DetallePage implements OnInit {
       this.inmueble.cliente = cliente;
       this.inmuebleService
         .deleteInmuebleCliente(this.inmueble)
-        .subscribe(() => {});
+        .subscribe((res) => {});
     });
-    this.inmuebleService.deleteInmueble(this.inmueble).subscribe(() => {});
+    this.inmuebleService.deleteInmueble(this.inmueble).subscribe((res) => {
+      if (res.results) {
+        this.alertController
+          .create({
+            header: 'EXITO',
+            message: 'Se eliminó el Inmueble',
+            buttons: ['CERRAR'],
+          })
+          .then((a) => a.present());
+      } else {
+        this.alertController
+          .create({
+            header: 'ERROR',
+            message: 'No se eliminó el Inmueble',
+            buttons: ['CERRAR'],
+          })
+          .then((a) => a.present());
+      }
+    });
   }
 
   eliminarFoto(imagen: Imagen) {
     this.inmuebleService.deleteImagen(imagen).subscribe((res) => {
       if (res.results) {
         this.imagenes = this.imagenes.filter((img) => img !== imagen);
+      } else {
+        this.alertController.create({
+          header: 'ERROR',
+          message: 'No se eliminó la Foto',
+          buttons: ['CERRAR'],
+        }).then((a) => a.present());
       }
     });
   }

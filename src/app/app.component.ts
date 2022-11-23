@@ -9,16 +9,16 @@ import { SessionService } from './services/session.service';
 export class AppComponent {
   public appPages = [
     { title: 'Perfil', url: '/perfil', icon: 'person' },
-    { title: 'Proyectos', url: '/proyectos', icon: 'heart' },
+    { title: 'Proyectos', url: '/proyectos', icon: 'folder' },
     {
       title: 'Cerrar Sesion',
       url: '',
       click: () => this.sessionService.clear(),
       icon: 'log-out-outline',
-    }
+    },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor(private sessionService: SessionService) { }
+  constructor(private sessionService: SessionService) {}
 
   click(funcion: any) {
     if (funcion) {

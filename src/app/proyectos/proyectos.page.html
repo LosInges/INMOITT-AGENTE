@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Proyectos</ion-title>
+    <ion-title color="secondary">Proyectos</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -10,7 +10,6 @@
         <ion-item-sliding *ngFor="let proyecto of proyectos" #itemSliding>
           <ion-item>
             <ion-label class="ion-text-center">{{proyecto.nombre}}</ion-label>
-
             <ion-label class="ion-text-center"
               >{{ proyecto.ciudad }}
             </ion-label>
