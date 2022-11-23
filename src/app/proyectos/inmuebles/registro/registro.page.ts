@@ -34,7 +34,7 @@ export class RegistroPage implements OnInit {
     descripcion: '',
     direccion: {
       lat: 0,
-      lng: 0
+      lng: 0,
     },
     foto: '',
     metros_cuadrados: 0,
@@ -60,14 +60,14 @@ export class RegistroPage implements OnInit {
     private alertCtrl: AlertController,
     private serviciosService: ServiciosService,
     private router: Router
-  ) { }
+  ) {}
 
   async mostrarAlerta(titulo: string, subtitulo: string, mensaje: string) {
     const alert = await this.alertCtrl.create({
       header: titulo,
       subHeader: subtitulo,
       message: mensaje,
-      buttons: ['OK']
+      buttons: ['OK'],
     });
     await alert.present();
     const result = await alert.onDidDismiss();
@@ -119,9 +119,14 @@ export class RegistroPage implements OnInit {
       this.inmueble.cuartos <= 0 ||
       this.inmueble.metros_cuadrados <= 0 ||
       this.inmueble.descripcion.trim().length <= 0 ||
-      this.inmueble.servicios.length <= 0  
+      this.inmueble.servicios.length <= 0 ||
+      this.inmueble.precio_venta <= 0
     ) {
-      this.mostrarAlerta("Error", "Campos vacios", "No deje espacios en blanco.")
+      this.mostrarAlerta(
+        'Error',
+        'Campos vacios',
+        'No deje espacios en blanco.'
+      );
     } else {
       this.inmuebleService.postInmueble(this.inmueble).subscribe((val) => {
         if (val.results) {
@@ -185,6 +190,6 @@ export class RegistroPage implements OnInit {
   }
 
   cerrar() {
-    this.router.navigate(['../'], { relativeTo: this.activeRoute })
+    this.router.navigate(['../'], { relativeTo: this.activeRoute });
   }
 }

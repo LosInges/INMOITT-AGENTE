@@ -48,11 +48,9 @@ export class AgenteService {
     );
   }
 
-  deleteAgente(rfc: string): Observable<any> {
+  deleteAgente(inmobiliaria: string, rfc: string): Observable<any> {
     return this.httpClient.delete<any>(`${environment.api}/agente`, {
-      body: { rfc },
+      body: { rfc, inmobiliaria },
     });
   }
-
-
 }
