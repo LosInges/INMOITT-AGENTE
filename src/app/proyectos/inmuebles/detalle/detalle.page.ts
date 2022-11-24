@@ -23,9 +23,7 @@ import { environment } from 'src/environments/environment';
 export class DetallePage implements OnInit {
   venta = false;
   renta = false;
-  correo: string = '';
-  venta = false;
-  renta = false;
+  correo: string = ''; 
   api = environment.api;
   imagenes: Imagen[] = [];
   clientes: string[];
