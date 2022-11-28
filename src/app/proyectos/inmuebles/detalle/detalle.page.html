@@ -22,30 +22,51 @@
         <ion-card-content>
           <ion-grid>
             <ion-row class="ion-align-items-end">
-              <ion-col class="ion-margin-top ion-margin-bottom" size-xs="12" size-xl="4">
+              <ion-col
+                class="ion-margin-top ion-margin-bottom"
+                size-xs="12"
+                size-xl="4"
+              >
                 <ion-item>
                   <ion-label position="floating"> TITULO </ion-label>
                   <ion-input [(ngModel)]="inmueble.titulo" disabled>
                   </ion-input>
                 </ion-item>
               </ion-col>
-              <ion-col class="ion-margin-top ion-margin-bottom" size-xs="12" size-xl="4">
+              <ion-col
+                class="ion-margin-top ion-margin-bottom"
+                size-xs="12"
+                size-xl="4"
+              >
                 <ion-item>
                   <ion-label position="floating"> ESTADO </ion-label>
                   <ion-input [(ngModel)]="inmueble.estado" disabled></ion-input>
                 </ion-item>
               </ion-col>
 
-              <ion-col class="ion-margin-top ion-margin-bottom" size-xs="12" size-xl="4">
-                <ion-img *ngIf="inmueble.foto" src="{{ api }}/{{ inmueble.foto }}" style="width: 64px"></ion-img>
+              <ion-col
+                class="ion-margin-top ion-margin-bottom"
+                size-xs="12"
+                size-xl="4"
+              >
+                <ion-img
+                  *ngIf="inmueble.foto"
+                  src="{{ api }}/{{ inmueble.foto }}"
+                ></ion-img>
                 <ion-col size-xs="12" size-xl="3">
-                  <ion-button expand="full" (click)="tomarFotografia()">TOMAR FOTO</ion-button>
+                  <ion-button expand="full" (click)="tomarFotografia()"
+                    >TOMAR FOTO</ion-button
+                  >
                 </ion-col>
               </ion-col>
             </ion-row>
 
             <ion-row class="ion-align-items-end">
-              <ion-col class="ion-margin-top ion-margin-bottom" size-xs="12" size-xl="6">
+              <ion-col
+                class="ion-margin-top ion-margin-bottom"
+                size-xs="12"
+                size-xl="6"
+              >
                 <ion-item>
                   <ion-label position="floating"> INMOBILIARIA </ion-label>
                   <ion-input [(ngModel)]="inmueble.inmobiliaria" disabled>
@@ -53,12 +74,19 @@
                 </ion-item>
               </ion-col>
 
-              <ion-col class="ion-margin-top ion-margin-bottom" size-xs="12" size-xl="6">
+              <ion-col
+                class="ion-margin-top ion-margin-bottom"
+                size-xs="12"
+                size-xl="6"
+              >
                 <ion-item>
                   <ion-label position="floating"> NOTARIOS </ion-label>
                   <ion-select [(ngModel)]="inmueble.notario">
-                    <ion-select-option *ngFor="let notario of notarios" [value]="notario.rfc">
-                      {{notario.nombre}}
+                    <ion-select-option
+                      *ngFor="let notario of notarios"
+                      [value]="notario.rfc"
+                    >
+                      {{notario.nombre}} {{notario.apellido}}
                     </ion-select-option>
                   </ion-select>
                 </ion-item>
@@ -77,12 +105,21 @@
           <ion-grid>
             <ion-row class="ion-align-items-end">
               <ion-col size-xs="12" size-xl="3">
-                <ion-button expand="full" size="default" (click)="verPosicion(inmueble.direccion)">Ver dirección
+                <ion-button
+                  expand="full"
+                  size="default"
+                  (click)="verPosicion(inmueble.direccion)"
+                  >Ver dirección
                 </ion-button>
               </ion-col>
 
               <ion-col size-xs="12" size-xl="3">
-                <ion-button expand="full" size="default" (click)="guardarDireccion()">Seleccionar dirección</ion-button>
+                <ion-button
+                  expand="full"
+                  size="default"
+                  (click)="guardarDireccion()"
+                  >Seleccionar dirección</ion-button
+                >
               </ion-col>
 
               <ion-col size-xs="12" size-xl="3">
@@ -101,7 +138,7 @@
             </ion-row>
 
             <ion-row class="ion-align-items-end">
-              <ion-col>
+              <ion-col size-xs="12" size-xl="4">
                 <ion-item>
                   <ion-label position="floating"> METROS CUADRADOS </ion-label>
                   <ion-input [(ngModel)]="inmueble.metros_cuadrados">
@@ -109,14 +146,14 @@
                 </ion-item>
               </ion-col>
 
-              <ion-col>
+              <ion-col size-xs="12" size-xl="4">
                 <ion-item>
                   <ion-label position="floating"> DESCRIPCION </ion-label>
-                  <ion-input [(ngModel)]="inmueble.descripcion"> </ion-input>
+                  <ion-textarea [(ngModel)]="inmueble.descripcion" [autoGrow]="true" > </ion-textarea>
                 </ion-item>
               </ion-col>
 
-              <ion-col>
+              <ion-col size-xs="12" size-xl="4">
                 <ion-item>
                   <ion-label position="floating"> SERVICIOS </ion-label>
                   <ion-input [(ngModel)]="inmueble.servicios"> </ion-input>
@@ -127,7 +164,10 @@
             <ion-row>
               <ion-col class="ion-margin-top ion-margin-bottom">
                 <ion-item>
-                  <ion-checkbox slot="start" [(ngModel)]="inmueble.visible"></ion-checkbox>
+                  <ion-checkbox
+                    slot="start"
+                    [(ngModel)]="inmueble.visible"
+                  ></ion-checkbox>
                   <ion-label>MOSTRAR</ion-label>
                 </ion-item>
               </ion-col>
@@ -138,12 +178,18 @@
                 <ion-item-group>
                   <ion-item>
                     <label> VENTA </label>
-                    <ion-checkbox slot="start" [(ngModel)]="venta"></ion-checkbox>
+                    <ion-checkbox
+                      slot="start"
+                      [(ngModel)]="venta"
+                    ></ion-checkbox>
                   </ion-item>
 
                   <ion-item *ngIf="venta">
                     <ion-label position="floating"> PRECIO VENTA </ion-label>
-                    <ion-input type="number" [(ngModel)]="inmueble.precio_venta">
+                    <ion-input
+                      type="number"
+                      [(ngModel)]="inmueble.precio_venta"
+                    >
                     </ion-input>
                   </ion-item>
                 </ion-item-group>
@@ -155,12 +201,18 @@
                 <ion-item-group>
                   <ion-item>
                     <label> RENTA </label>
-                    <ion-checkbox slot="start" [(ngModel)]="renta"></ion-checkbox>
+                    <ion-checkbox
+                      slot="start"
+                      [(ngModel)]="renta"
+                    ></ion-checkbox>
                   </ion-item>
 
                   <ion-item *ngIf="renta">
                     <ion-label position="floating"> PRECIO RENTA </ion-label>
-                    <ion-input type="number" [(ngModel)]="inmueble.precio_renta">
+                    <ion-input
+                      type="number"
+                      [(ngModel)]="inmueble.precio_renta"
+                    >
                     </ion-input>
                   </ion-item>
                 </ion-item-group>
@@ -170,11 +222,19 @@
         </ion-card-content>
 
         <ion-card-content>
-          <ion-button class="ion-float-right ion-margin-top ion-margin-bottom" fill="solid"
-            (click)=" actualizarInmueble()">
+          <ion-button
+            class="ion-float-right ion-margin-top ion-margin-bottom"
+            fill="solid"
+            (click)=" actualizarInmueble()"
+          >
             ACTUALIZAR
           </ion-button>
-          <ion-button class="ion-float-left ion-margin-top" fill="solid" color="danger" (click)="eliminarInmueble()">
+          <ion-button
+            class="ion-float-left ion-margin-top"
+            fill="solid"
+            color="danger"
+            (click)="eliminarInmueble()"
+          >
             ELIMINAR
           </ion-button>
         </ion-card-content>
@@ -186,18 +246,26 @@
       <ion-grid>
         <ion-row>
           <ion-col size="6" *ngFor="let imagen of imagenes">
-            <ion-img src="{{api}}/{{imagen.ruta}}" (click)="eliminar(imagen)"></ion-img>
+            <ion-img
+              src="{{api}}/{{imagen.ruta}}"
+              (click)="eliminar(imagen)"
+            ></ion-img>
           </ion-col>
         </ion-row>
       </ion-grid>
     </ion-card-content>
-
   </ion-card>
 
-  <ion-label>CLIENTES</ion-label>
-  <ion-list>
-    <ion-item *ngFor="let cliente of clientes">
-      <ion-label> {{cliente}} </ion-label>
-    </ion-item>
-  </ion-list>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title color="secondary">CLIENTES</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let cliente of clientes">
+          <ion-label> {{cliente}} </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

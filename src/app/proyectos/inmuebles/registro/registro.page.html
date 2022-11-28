@@ -30,9 +30,9 @@
               </ion-col>
 
               <ion-col size-xs="12" size-xl="4">
-                <ion-img style="width: 64px;"
+                <ion-img
                   *ngIf="inmueble.foto"
-                  src="{{ api }}/{{ inmueble.foto }}"
+                  src="{{ api }}/img/{{ inmueble.foto.split('/').pop() }}"
                 ></ion-img>
                 <ion-button
                   size="default"

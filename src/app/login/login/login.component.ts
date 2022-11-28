@@ -29,9 +29,7 @@ export class LoginComponent implements OnInit {
       message: mensaje,
       buttons: ['OK'],
     });
-    await alert.present();
-    const result = await alert.onDidDismiss();
-    console.log(result);
+    return alert.present();
   }
 
   ngOnInit() {}
@@ -54,7 +52,7 @@ export class LoginComponent implements OnInit {
             console.log('NO es agente');
             this.mostrarAlerta(
               'Error:',
-              'RFC inválido',
+              'Credenciales incorrectas',
               'Recuerde bien su RFC y contraseña'
             );
             return;
@@ -66,7 +64,7 @@ export class LoginComponent implements OnInit {
             this.sessionService.set('inmobiliaria', res.session.empresa),
           ];
 
-          Promise.all(promesas).then((res) => {
+          Promise.all(promesas).then(() => {
             this.cerrar();
             this.router.navigate(['/', 'perfil']);
           });

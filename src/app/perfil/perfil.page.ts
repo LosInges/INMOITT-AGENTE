@@ -41,17 +41,7 @@ export class PerfilPage implements OnInit {
     private alertCtrl: AlertController,
     private fotoService: FotoService,
     private alertController: AlertController
-  ) {
-    router.events.subscribe((e) => {
-      if (e instanceof NavigationEnd) {
-        this.sessionService.keys().then((k) => {
-          if (k.length <= 0) {
-            this.router.navigate(['']);
-          }
-        });
-      }
-    });
-  }
+  ) {}
 
   async mostrarAlerta(titulo: string, subtitulo: string, mensaje: string) {
     const alert = await this.alertCtrl.create({
@@ -177,7 +167,7 @@ export class PerfilPage implements OnInit {
       ],
     });
     alert.onDidDismiss().then((data) => {
-      if (this.agente.password == data.data.values.password) {
+      if (this.agente.password === data.data.values.password) {
         this.agenteService
           .deleteAgente(this.agente.rfc, this.agente.inmobiliaria)
           ?.subscribe((val) => {

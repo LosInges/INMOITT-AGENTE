@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
@@ -23,7 +24,7 @@ import { environment } from 'src/environments/environment';
 export class DetallePage implements OnInit {
   venta = false;
   renta = false;
-  correo: string = ''; 
+  correo = '';
   api = environment.api;
   imagenes: Imagen[] = [];
   clientes: string[];
@@ -280,11 +281,13 @@ export class DetallePage implements OnInit {
       if (res.results) {
         this.imagenes = this.imagenes.filter((img) => img !== imagen);
       } else {
-        this.alertController.create({
-          header: 'ERROR',
-          message: 'No se eliminó la Foto',
-          buttons: ['CERRAR'],
-        }).then((a) => a.present());
+        this.alertController
+          .create({
+            header: 'ERROR',
+            message: 'No se eliminó la Foto',
+            buttons: ['CERRAR'],
+          })
+          .then((a) => a.present());
       }
     });
   }

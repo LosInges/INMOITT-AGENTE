@@ -5,26 +5,33 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InmobiliariaService {
+  constructor(private httpClient: HttpClient) {}
 
-  constructor(private httpClient:HttpClient) { }
-
-  postInmobiliaria(inmobiliaria: Inmobiliaria):Observable<any>{
-    return this.httpClient.post<any>(`${environment.api}/inmobiliaria`,inmobiliaria)
+  postInmobiliaria(inmobiliaria: Inmobiliaria): Observable<any> {
+    return this.httpClient.post<any>(
+      `${environment.api}/inmobiliaria`,
+      inmobiliaria
+    );
   }
 
-  getInmobiliaria(correo: string):Observable<Inmobiliaria>{
-    return this.httpClient.get<Inmobiliaria>(`${environment.api}/inmobiliaria/${correo}`)
+  getInmobiliaria(correo: string): Observable<Inmobiliaria> {
+    return this.httpClient.get<Inmobiliaria>(
+      `${environment.api}/inmobiliaria/${correo}`
+    );
   }
 
-  getInmobiliarias():Observable<Inmobiliaria[]>{
-    return this.httpClient.get<Inmobiliaria[]>(`${environment.api}/inmobiliarias`)
+  getInmobiliarias(): Observable<Inmobiliaria[]> {
+    return this.httpClient.get<Inmobiliaria[]>(
+      `${environment.api}/inmobiliarias`
+    );
   }
 
-  deleteInmobiliaria(correo: string):Observable<any>{
-    return this.httpClient.delete<any>(`${environment.api}/inmobiliaria`,{body:{correo}})
+  deleteInmobiliaria(correo: string): Observable<any> {
+    return this.httpClient.delete<any>(`${environment.api}/inmobiliaria`, {
+      body: { correo },
+    });
   }
-
 }
