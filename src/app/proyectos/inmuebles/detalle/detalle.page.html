@@ -23,7 +23,6 @@
           <ion-grid>
             <ion-row class="ion-align-items-end">
               <ion-col
-                class="ion-margin-top ion-margin-bottom"
                 size-xs="12"
                 size-xl="4"
               >
@@ -34,30 +33,29 @@
                 </ion-item>
               </ion-col>
               <ion-col
-                class="ion-margin-top ion-margin-bottom"
                 size-xs="12"
                 size-xl="4"
               >
-                <ion-item>
+                <ion-item class="ion-margin-top ion-margin-bottom">
                   <ion-label position="floating"> ESTADO </ion-label>
                   <ion-input [(ngModel)]="inmueble.estado" disabled></ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col
-                class="ion-margin-top ion-margin-bottom"
                 size-xs="12"
                 size-xl="4"
               >
+
+               <ion-item>
                 <ion-img
-                  *ngIf="inmueble.foto"
-                  src="{{ api }}/{{ inmueble.foto }}"
-                ></ion-img>
-                <ion-col size-xs="12" size-xl="3">
+                *ngIf="inmueble.foto"
+                src="{{ api }}/img/{{ inmueble.foto.split('/').pop() }}"
+              ></ion-img>
+               </ion-item>
                   <ion-button expand="full" (click)="tomarFotografia()"
                     >TOMAR FOTO</ion-button
                   >
-                </ion-col>
               </ion-col>
             </ion-row>
 
@@ -81,7 +79,7 @@
               >
                 <ion-item>
                   <ion-label position="floating"> NOTARIOS </ion-label>
-                  <ion-select [(ngModel)]="inmueble.notario">
+                  <ion-select [(ngModel)]="inmueble.notario" interface="popover">
                     <ion-select-option
                       *ngFor="let notario of notarios"
                       [value]="notario.rfc"
