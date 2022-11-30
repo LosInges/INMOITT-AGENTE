@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Component, Input, OnInit } from '@angular/core';
@@ -138,7 +139,7 @@ export class RegistroPage implements OnInit {
     }
   }
 
-  validaciones(): Boolean {
+  validaciones(): boolean {
     if (this.inmueble.inmobiliaria.trim().length <= 0) {
       this.mostrarAlerta(
         'Error',
@@ -229,7 +230,10 @@ export class RegistroPage implements OnInit {
       return false;
     }
 
-    if (this.inmueble.direccion.lat == 0 && this.inmueble.direccion.lng == 0) {
+    if (
+      this.inmueble.direccion.lat === 0 &&
+      this.inmueble.direccion.lng === 0
+    ) {
       this.mostrarAlerta('Error', 'Campos vacios', 'Ingrese la dirección.');
       return false;
     }
@@ -260,6 +264,7 @@ export class RegistroPage implements OnInit {
   async guardarDireccion() {
     const modal = await this.modalController.create({
       component: MapsComponent,
+      componentProps: { position: this.inmueble.direccion },
       cssClass: 'modalGeneral',
     });
     modal.onDidDismiss().then((res) => {
