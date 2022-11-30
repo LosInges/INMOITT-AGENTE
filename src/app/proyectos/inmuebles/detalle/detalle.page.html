@@ -22,40 +22,30 @@
         <ion-card-content>
           <ion-grid>
             <ion-row class="ion-align-items-end">
-              <ion-col
-                size-xs="12"
-                size-xl="4"
-              >
+              <ion-col size-xs="12" size-xl="4">
                 <ion-item>
                   <ion-label position="floating"> TITULO </ion-label>
                   <ion-input [(ngModel)]="inmueble.titulo" disabled>
                   </ion-input>
                 </ion-item>
               </ion-col>
-              <ion-col
-                size-xs="12"
-                size-xl="4"
-              >
+              <ion-col size-xs="12" size-xl="4">
                 <ion-item class="ion-margin-top ion-margin-bottom">
                   <ion-label position="floating"> ESTADO </ion-label>
                   <ion-input [(ngModel)]="inmueble.estado" disabled></ion-input>
                 </ion-item>
               </ion-col>
 
-              <ion-col
-                size-xs="12"
-                size-xl="4"
-              >
-
-               <ion-item>
-                <ion-img
-                *ngIf="inmueble.foto"
-                src="{{ api }}/img/{{ inmueble.foto.split('/').pop() }}"
-              ></ion-img>
-               </ion-item>
-                  <ion-button expand="full" (click)="tomarFotografia()"
-                    >TOMAR FOTO</ion-button
-                  >
+              <ion-col size-xs="12" size-xl="4">
+                <ion-item>
+                  <ion-img
+                    *ngIf="inmueble.foto"
+                    src="{{ api }}/img/{{ inmueble.foto.split('/').pop() }}"
+                  ></ion-img>
+                </ion-item>
+                <ion-button expand="full" (click)="tomarFotografia()"
+                  >TOMAR FOTO</ion-button
+                >
               </ion-col>
             </ion-row>
 
@@ -79,7 +69,10 @@
               >
                 <ion-item>
                   <ion-label position="floating"> NOTARIOS </ion-label>
-                  <ion-select [(ngModel)]="inmueble.notario" interface="popover">
+                  <ion-select
+                    [(ngModel)]="inmueble.notario"
+                    interface="popover"
+                  >
                     <ion-select-option
                       *ngFor="let notario of notarios"
                       [value]="notario.rfc"
@@ -106,7 +99,7 @@
                 <ion-button
                   expand="full"
                   size="default"
-                  (click)="verPosicion(inmueble.direccion)"
+                  (click)="verPosicion()"
                   >Ver dirección
                 </ion-button>
               </ion-col>
@@ -147,7 +140,11 @@
               <ion-col size-xs="12" size-xl="4">
                 <ion-item>
                   <ion-label position="floating"> DESCRIPCION </ion-label>
-                  <ion-textarea [(ngModel)]="inmueble.descripcion" [autoGrow]="true" > </ion-textarea>
+                  <ion-textarea
+                    [(ngModel)]="inmueble.descripcion"
+                    [autoGrow]="true"
+                  >
+                  </ion-textarea>
                 </ion-item>
               </ion-col>
 

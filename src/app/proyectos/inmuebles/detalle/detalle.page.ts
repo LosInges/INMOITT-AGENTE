@@ -216,10 +216,10 @@ export class DetallePage implements OnInit {
     }
   }
 
-  async verPosicion(position: Direccion) {
+  async verPosicion() {
     const modal = await this.modalController.create({
       component: MapsComponent,
-      componentProps: { position },
+      componentProps: { position: this.inmueble.direccion },
       cssClass: 'modalGeneral',
     });
     return modal.present();
@@ -228,6 +228,7 @@ export class DetallePage implements OnInit {
   async guardarDireccion() {
     const modal = await this.modalController.create({
       component: MapsComponent,
+      componentProps: { position: this.inmueble.direccion },
       cssClass: 'modalGeneral',
     });
     modal.onDidDismiss().then((res) => {
@@ -292,7 +293,7 @@ export class DetallePage implements OnInit {
     });
   }
 
-  validaciones(): Boolean {
+  validaciones(): boolean {
     if (this.inmueble.inmobiliaria.trim().length <= 0) {
       this.mostrarAlerta(
         'Error',
@@ -383,7 +384,7 @@ export class DetallePage implements OnInit {
       return false;
     }
 
-    if (this.inmueble.direccion.lat == 0 && this.inmueble.direccion.lng == 0) {
+    if (this.inmueble.direccion.lat === 0 && this.inmueble.direccion.lng === 0) {
       this.mostrarAlerta('Error', 'Campos vacios', 'Ingrese la dirección.');
       return false;
     }
