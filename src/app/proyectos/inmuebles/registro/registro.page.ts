@@ -1,10 +1,11 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Component, Input, OnInit } from '@angular/core';
-import { MapsComponent } from 'src/app/maps/maps.component';
+
 import { FotoService } from 'src/app/services/foto.service';
 import { Inmueble } from 'src/app/interfaces/inmueble';
 import { InmuebleService } from 'src/app/services/inmueble.service';
+import { MapsComponent } from 'src/app/maps/maps.component';
 import { Notario } from 'src/app/interfaces/notario';
 import { NotarioService } from 'src/app/services/notario.service';
 import { ProyectosService } from 'src/app/services/proyectos.service';
@@ -18,8 +19,8 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./registro.page.scss'],
 })
 export class RegistroPage implements OnInit {
-  @Input() notarios: Notario[] = [];
-  @Input() servicios: string[] = this.serviciosService.getServicios();
+  notarios: Notario[] = [];
+  servicios: string[] = this.serviciosService.getServicios();
 
   venta = false;
   renta = false;
@@ -69,9 +70,7 @@ export class RegistroPage implements OnInit {
       message: mensaje,
       buttons: ['OK'],
     });
-    await alert.present();
-    const result = await alert.onDidDismiss();
-    console.log(result);
+    return alert.present();
   }
 
   ngOnInit() {
@@ -110,24 +109,7 @@ export class RegistroPage implements OnInit {
   }
 
   registrarInmueble() {
-    if (
-      this.inmueble.inmobiliaria.trim().length <= 0 ||
-      this.inmueble.titulo.trim().length <= 0 ||
-      this.inmueble.estado.trim().length <= 0 ||
-      this.inmueble.notario.trim().length <= 0 ||
-      this.inmueble.pisos <= 0 ||
-      this.inmueble.cuartos <= 0 ||
-      this.inmueble.metros_cuadrados <= 0 ||
-      this.inmueble.descripcion.trim().length <= 0 ||
-      this.inmueble.servicios.length <= 0 ||
-      this.inmueble.precio_venta <= 0
-    ) {
-      this.mostrarAlerta(
-        'Error',
-        'Campos vacios',
-        'No deje espacios en blanco.'
-      );
-    } else {
+    if (this.validaciones()) {
       this.inmuebleService.postInmueble(this.inmueble).subscribe((val) => {
         if (val.results) {
           this.alertConttroller
@@ -154,6 +136,105 @@ export class RegistroPage implements OnInit {
           .then((a) => a.present());
       });
     }
+  }
+
+  validaciones(): Boolean {
+    if (this.inmueble.inmobiliaria.trim().length <= 0) {
+      this.mostrarAlerta(
+        'Error',
+        'Campos vacios',
+        'Debe tener una inmobiliaria asignada'
+      );
+      return false;
+    }
+    if (this.inmueble.titulo.trim().length <= 0) {
+      this.mostrarAlerta(
+        'Error',
+        'Campos vacios',
+        'Rellene el campo de título'
+      );
+      return false;
+    }
+    if (this.inmueble.estado.trim().length <= 0) {
+      this.mostrarAlerta(
+        'Error',
+        'Campos vacios',
+        'Tiene que tener asignado un Estado'
+      );
+      return false;
+    }
+    if (this.inmueble.notario.trim().length <= 0) {
+      this.mostrarAlerta('Error', 'Campos vacios', 'Escoga un Notario');
+      return false;
+    }
+    if (this.inmueble.pisos <= 0) {
+      this.mostrarAlerta(
+        'Error',
+        'Campos vacios',
+        'Ingrese la cantidad de pisos'
+      );
+      return false;
+    }
+    if (this.inmueble.cuartos <= 0) {
+      this.mostrarAlerta(
+        'Error',
+        'Campos vacios',
+        'Ingrese la cantidad de cuartos'
+      );
+      return false;
+    }
+    if (this.inmueble.metros_cuadrados <= 0) {
+      this.mostrarAlerta(
+        'Error',
+        'Campos vacios',
+        'Ingrese los Metros cuadrados'
+      );
+      return false;
+    }
+    if (this.inmueble.descripcion.trim().length <= 0) {
+      this.mostrarAlerta(
+        'Error',
+        'Campos vacios',
+        'Tiene que ingresar una descripción'
+      );
+      return false;
+    }
+    if (this.inmueble.servicios.length <= 0) {
+      this.mostrarAlerta('Error', 'Campos vacios', '¿QUÉ servicios tiene?');
+      return false;
+    }
+    if (!this.venta && !this.renta) {
+      this.mostrarAlerta(
+        'Error',
+        'Campos vacios',
+        'Seleccione por lo menos una opción de comercialización'
+      );
+      return false;
+    }
+    //Aqui venta o renta estan seleccionados, por lo menos uno de ellos
+    if (this.venta && this.inmueble.precio_venta <= 0) {
+      this.mostrarAlerta(
+        'Error',
+        'Precio de venta no valido',
+        'Ingrese un valor positivo mayor a 0 para la venta'
+      );
+      return false;
+    }
+    if (this.renta && this.inmueble.precio_renta <= 0) {
+      this.mostrarAlerta(
+        'Error',
+        'Precio de renta no valido',
+        'Ingrese un valor positivo mayor a 0 para la renta'
+      );
+      return false;
+    }
+
+    if (this.inmueble.direccion.lat == 0 && this.inmueble.direccion.lng == 0) {
+      this.mostrarAlerta('Error', 'Campos vacios', 'Ingrese la dirección.');
+      return false;
+    }
+
+    return true;
   }
 
   tomarFotografia() {
